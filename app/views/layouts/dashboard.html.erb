@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Dashboard App" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Flowbite CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <!-- Custom CSS variables for themes -->
+    <style>
+      :root {
+        --primary-color: #3b82f6;
+        --secondary-color: #64748b;
+        --success-color: #22c55e;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+        --bg-color: #f8fafc;
+        --surface-color: #ffffff;
+        --text-color: #1e293b;
+      }
+
+      [data-theme="admin"] {
+        --primary-color: #ea580c;
+        --secondary-color: #fb923c;
+        --bg-color: #fff7ed;
+        --surface-color: #ffffff;
+        --text-color: #9a3412;
+      }
+
+      [data-theme="user"] {
+        --primary-color: #6b7280;
+        --secondary-color: #9ca3af;
+        --bg-color: #f9fafb;
+        --surface-color: #ffffff;
+        --text-color: #374151;
+      }
+
+      .admin-theme {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+
+      .user-theme {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+      }
+    </style>
+  </head>
+
+  <body class="<%= current_user_admin? ? 'admin-theme' : 'user-theme' %> bg-gray-50" 
+        data-theme="<%= current_user_admin? ? 'admin' : 'user' %>">
+    
+    <!-- Navigation -->
+    <%= render 'shared/navigation' %>
+
+    <!-- Flash Messages -->
+    <div id="flash_messages" class="fixed top-4 right-4 z-50">
+      <%= render 'shared/flash' if notice || alert %>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-4 sm:ml-64">
+      <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+        <%= yield %>
+      </div>
+    </div>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+  </body>
+</html>

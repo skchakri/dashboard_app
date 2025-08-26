@@ -1,0 +1,49 @@
+<section class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+      <svg class="w-8 h-8 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2a1 1 0 1 0-2 0v1.046c.938.07 1.837.29 2.418.569l-.018.008ZM6 4.586V3a1 1 0 0 0-2 0v1.586c.662-.279 1.433-.499 2.418-.569V2a1 1 0 1 0-2 0v2.046c-.967.279-1.756.499-2.418.569V3a1 1 0 0 0-2 0v1.586c-.662.279-1.433.499-2.418.569V2a1 1 0 1 0-2 0v2.046c-.967.279-1.756.499-2.418.569V3a1 1 0 0 0-2 0v1.586c-.662.279-1.433.499-2.418.569V2a1 1 0 1 0-2 0v2.046A6.665 6.665 0 0 0 2 10v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a6.665 6.665 0 0 0-2.582-5.954ZM9 16a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+      </svg>
+      Dashboard App    
+    </a>
+    <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+          Sign in to your account
+        </h1>
+        <%= form_with url: login_path, method: :post, local: true, data: { turbo: false }, class: "space-y-4 md:space-y-6" do |form| %>
+          <div>
+            <%= form.label :email, "Your email", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= form.email_field :email, placeholder: "name@company.com", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= form.label :password, "Password", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= form.password_field :password, placeholder: "••••••••", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
+              </div>
+            </div>
+          </div>
+          <%= form.submit "Sign in", class: "w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 bg-blue-600 hover:bg-blue-700" %>
+        <% end %>
+
+        <div class="mt-6">
+          <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg">
+            <h3 class="font-semibold text-sm mb-2">Demo Accounts:</h3>
+            <div class="text-xs space-y-1">
+              <p><strong>Admin:</strong> admin@dashboard.com</p>
+              <p><strong>User:</strong> user@dashboard.com</p>
+              <p><strong>Password:</strong> password123</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

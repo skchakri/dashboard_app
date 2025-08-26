@@ -1,0 +1,22 @@
+default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  adapter: sqlite3
+  database: storage/development.sqlite3
+
+test:
+  <<: *default
+  adapter: sqlite3
+  database: storage/test.sqlite3
+
+production:
+  <<: *default
+  adapter: mysql2
+  encoding: utf8mb4
+  database: dashboard_app_production
+  username: dashboard_app
+  password: <%= ENV["DASHBOARD_APP_DATABASE_PASSWORD"] %>
+  host: 127.0.0.1
