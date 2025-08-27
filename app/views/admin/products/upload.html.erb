@@ -1,0 +1,247 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+            Bulk Product Upload
+          </h1>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Upload products via JSON file with market-specific data
+          </p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <%= link_to admin_products_path, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700" do %>
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4 4M1 5l4-4"/>
+            </svg>
+            Back to Products
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if current_company&.subdomain == 'default' %>
+      <!-- Company Selection Card for Default Admin -->
+      <div class="mb-6">
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+          <div class="flex items-center mb-4">
+            <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4-1v2a3 3 0 1 1-3-3V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1Z"/>
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Select Target Company</h3>
+          </div>
+          <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">Choose which company to upload products to</p>
+          
+          <%= form_with url: upload_admin_products_path, method: :get, local: true, class: "flex items-end space-x-4" do |f| %>
+            <div class="flex-1">
+              <label for="company-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+              <%= f.collection_select :company_id, @companies, :id, :name, 
+                  { prompt: "Choose company...", selected: params[:company_id] }, 
+                  { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", id: "company-select" } %>
+            </div>
+            <div>
+              <%= f.submit "Select", class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @target_company %>
+      <!-- Target Company Info -->
+      <div class="mb-6">
+        <div class="flex items-center p-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800">
+          <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Uploading to:</span> <%= @target_company.name %>
+            <% if current_company&.subdomain == 'default' %>
+              (<%= @target_company.subdomain %>)
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Form Card -->
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center mb-4">
+          <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Upload JSON File</h3>
+        </div>
+        
+        <%= form_with url: import_admin_products_path, multipart: true, local: true, class: "upload-form" do |f| %>
+          <% if current_company&.subdomain == 'default' %>
+            <%= f.hidden_field :company_id, value: @target_company.id %>
+          <% end %>
+          
+          <!-- File Upload Area -->
+          <div class="mb-6">
+            <label for="json_file" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select JSON File</label>
+            <div class="flex items-center justify-center w-full">
+              <label for="json_file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                  </svg>
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">JSON files only (MAX. 10MB)</p>
+                </div>
+                <%= f.file_field :json_file, 
+                    accept: ".json", 
+                    required: true,
+                    class: "hidden",
+                    id: "json_file",
+                    onchange: "updateFileName(this)" %>
+              </label>
+            </div>
+            <div id="file-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400 hidden">
+              <span class="font-medium">Selected:</span> <span id="file-name-text"></span>
+            </div>
+          </div>
+
+          <!-- Instructions -->
+          <div class="mb-6 p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300">
+            <div class="flex items-center mb-2">
+              <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="font-medium">Upload Instructions:</span>
+            </div>
+            <ul class="list-disc list-inside space-y-1 ml-6">
+              <li>File must be in JSON format with product array structure</li>
+              <li>Each product should include SKU, name, description, and price</li>
+              <li>Market-specific data supported for US, UK, and CA</li>
+              <li>Categories, keywords, and images can be included</li>
+              <li>Maximum file size: 10MB</li>
+            </ul>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-4">
+            <%= f.submit "Import Products", 
+                class: "text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800",
+                data: { 
+                  confirm: "This will import products into #{@target_company.name}. Continue?",
+                  disable_with: "<svg class='inline w-4 h-4 mr-3 text-white animate-spin' viewBox='0 0 100 101'><path d='m84.4 90.6' fill='currentColor' d='M100 50.5908C100 78.2051 77.6142 100.591 50 100.591S0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z'/><path d='m93.9676 39.0409' fill='currentColor' d='M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z'/></svg>Importing..." } %>
+            
+            <button type="button" 
+                    onclick="downloadSampleJson()" 
+                    class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+              <svg class="w-4 h-4 mr-2 inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 19">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15h.01M4 12H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-3M9.5 1v10.93m4-3.93-4 4-4-4"/>
+              </svg>
+              Download Sample
+            </button>
+            
+            <%= link_to "Cancel", admin_products_path, 
+                class: "py-2.5 px-5 text-sm font-medium text-gray-500 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" %>
+          </div>
+        <% end %>
+      </div>
+
+    <% else %>
+      <!-- No Company Selected Warning -->
+      <div class="flex items-center p-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800">
+        <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>
+        <span class="sr-only">Warning</span>
+        <div>
+          <% if current_company&.subdomain == 'default' %>
+            Please select a company to upload products.
+          <% else %>
+            Unable to determine target company.
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+function downloadSampleJson() {
+  const sampleData = <%= raw File.read(Rails.root.join('db', 'sample_products_20.json')) rescue '[]' %>;
+  const dataStr = JSON.stringify(sampleData, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+  
+  const exportFileDefaultName = 'sample_products_20.json';
+  
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+}
+
+function updateFileName(input) {
+  const fileNameDiv = document.getElementById('file-name');
+  const fileNameText = document.getElementById('file-name-text');
+  
+  if (input.files && input.files[0]) {
+    fileNameText.textContent = input.files[0].name;
+    fileNameDiv.classList.remove('hidden');
+  } else {
+    fileNameDiv.classList.add('hidden');
+  }
+}
+
+// Auto-submit form when company is selected
+document.addEventListener('DOMContentLoaded', function() {
+  const companySelect = document.getElementById('company-select');
+  if (companySelect) {
+    companySelect.addEventListener('change', function() {
+      if (this.value) {
+        this.closest('form').submit();
+      }
+    });
+  }
+  
+  // Drag and drop functionality
+  const fileInput = document.getElementById('json_file');
+  const dropArea = fileInput?.parentElement;
+  
+  if (dropArea) {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+    
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    
+    function highlight(e) {
+      dropArea.classList.add('border-blue-500', 'bg-blue-50');
+    }
+    
+    function unhighlight(e) {
+      dropArea.classList.remove('border-blue-500', 'bg-blue-50');
+    }
+    
+    dropArea.addEventListener('drop', handleDrop, false);
+    
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      
+      if (files.length > 0) {
+        fileInput.files = files;
+        updateFileName(fileInput);
+      }
+    }
+  }
+});
+</script>

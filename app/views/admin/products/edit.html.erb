@@ -1,0 +1,292 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+            Edit Product
+          </h1>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Update product information and manage market-specific settings
+          </p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <%= link_to admin_products_path, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700" do %>
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0l4 4M1 5l4-4"/>
+            </svg>
+            Back to Products
+          <% end %>
+          <%= link_to admin_product_path(@product), class: "inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" do %>
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/>
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+            </svg>
+            View Product
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%= form_with model: [:admin, @product], local: true, class: "space-y-6" do |f| %>
+      <% if @product.errors.any? %>
+        <div class="flex p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800">
+          <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+          </svg>
+          <span class="sr-only">Danger</span>
+          <div>
+            <span class="font-medium">Please fix the following errors:</span>
+            <ul class="mt-1.5 ml-4 list-disc list-inside">
+              <% @product.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Basic Information -->
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center mb-4">
+          <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4-1v2a3 3 0 1 1-3-3V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1Z"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= f.label :sku, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= f.text_field :sku, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "PRODUCT-001" %>
+          </div>
+          
+          <div>
+            <%= f.label :status, class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= f.select :status, options_for_select([['Active', 'active'], ['Inactive', 'inactive'], ['Discontinued', 'discontinued']], @product.status), {}, { class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" } %>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <%= f.label :base_name, "Product Name", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+          <%= f.text_field :base_name, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Enter product name" %>
+        </div>
+        
+        <div class="mt-6">
+          <%= f.label :base_description, "Description", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+          <%= f.text_area :base_description, rows: 4, class: "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Enter product description..." %>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div>
+            <%= f.label :base_price, "Base Price ($)", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= f.number_field :base_price, step: 0.01, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "0.00" %>
+          </div>
+          
+          <div>
+            <%= f.label :stock_quantity, "Stock Quantity", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+            <%= f.number_field :stock_quantity, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "0" %>
+          </div>
+          
+          <div class="flex items-center space-x-4 pt-8">
+            <label class="inline-flex items-center">
+              <%= f.check_box :track_inventory, class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
+              <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Track Inventory</span>
+            </label>
+            
+            <label class="inline-flex items-center">
+              <%= f.check_box :featured, class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
+              <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Featured</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center mb-4">
+          <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12.25V1.75a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H4.75a.75.75 0 0 1-.75-.75Z"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 8.25H12M8 5.75H12M8 10.75H12"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Categories</h3>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <% @target_company.categories.each do |category| %>
+            <label class="inline-flex items-center p-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600">
+              <%= check_box_tag "product[category_ids][]", category.id, @product.categories.include?(category), class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
+              <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"><%= category.name %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Keywords -->
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center mb-4">
+          <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm2 2.5h6.5a1 1 0 0 1 0 2H11a1 1 0 0 1 0-2Zm0 4h6.5a1 1 0 0 1 0 2H11a1 1 0 0 1 0-2Z"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Keywords</h3>
+        </div>
+        
+        <div id="keywords-container" class="space-y-3">
+          <% if @product.product_keywords.any? %>
+            <% @product.product_keywords.each_with_index do |keyword, index| %>
+              <div class="flex items-center space-x-2 keyword-row">
+                <%= text_field_tag "product[product_keywords_attributes][#{index}][keyword]", keyword.keyword, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Enter keyword" %>
+                <%= hidden_field_tag "product[product_keywords_attributes][#{index}][id]", keyword.id %>
+                <button type="button" onclick="removeKeyword(this)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 focus:ring-4 focus:outline-none focus:ring-red-300">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="flex items-center space-x-2 keyword-row">
+              <%= text_field_tag "product[product_keywords_attributes][0][keyword]", "", class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "Enter keyword" %>
+              <button type="button" onclick="removeKeyword(this)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 focus:ring-4 focus:outline-none focus:ring-red-300">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          <% end %>
+        </div>
+        
+        <button type="button" onclick="addKeyword()" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-300 rounded-lg hover:bg-blue-50 focus:ring-4 focus:outline-none focus:ring-blue-300">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Add Keyword
+        </button>
+      </div>
+
+      <!-- Market-Specific Pricing -->
+      <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center mb-4">
+          <svg class="w-6 h-6 text-gray-400 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1v12Z"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 8v8"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h4"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Market-Specific Settings</h3>
+        </div>
+        
+        <div class="space-y-6">
+          <% @target_company.markets.each do |market| %>
+            <% market_data = @product.product_markets.find_by(market: market) %>
+            <div class="border border-gray-200 rounded-lg p-4 dark:border-gray-600">
+              <div class="flex items-center mb-4">
+                <span class="inline-flex items-center bg-purple-100 text-purple-800 text-sm font-medium mr-3 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
+                  <%= market.code.upcase %>
+                </span>
+                <h4 class="text-md font-medium text-gray-900 dark:text-white"><%= market.name %> (<%= market.currency %>)</h4>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price (<%= market.currency %>)</label>
+                  <%= number_field_tag "product[product_markets_attributes][#{market.id}][price]", market_data&.price, step: 0.01, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "0.00" %>
+                  <%= hidden_field_tag "product[product_markets_attributes][#{market.id}][market_id]", market.id %>
+                  <%= hidden_field_tag "product[product_markets_attributes][#{market.id}][id]", market_data&.id if market_data %>
+                </div>
+                
+                <div>
+                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Special Price (<%= market.currency %>)</label>
+                  <%= number_field_tag "product[product_markets_attributes][#{market.id}][special_price]", market_data&.special_price, step: 0.01, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500", placeholder: "0.00" %>
+                </div>
+                
+                <div class="flex items-center pt-8">
+                  <label class="inline-flex items-center">
+                    <%= check_box_tag "product[product_markets_attributes][#{market.id}][available]", "1", market_data&.available || true, class: "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" %>
+                    <span class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Available</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Special Price Start</label>
+                  <%= date_field_tag "product[product_markets_attributes][#{market.id}][special_price_start]", market_data&.special_price_start, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+                </div>
+                
+                <div>
+                  <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Special Price End</label>
+                  <%= date_field_tag "product[product_markets_attributes][#{market.id}][special_price_end]", market_data&.special_price_end, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex items-center justify-between pt-6">
+        <div class="flex space-x-4">
+          <%= f.submit "Update Product", class: "text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800", data: { disable_with: "Updating..." } %>
+          
+          <%= link_to "Cancel", admin_products_path, class: "py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" %>
+        </div>
+        
+        <div>
+          <%= link_to admin_product_path(@product), method: :delete, 
+              class: "text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900",
+              data: { 
+                confirm: "Are you sure you want to delete this product? This action cannot be undone.",
+                turbo_method: :delete 
+              } do %>
+            <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+            Delete Product
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+let keywordIndex = <%= @product.product_keywords.count %>;
+
+function addKeyword() {
+  const container = document.getElementById('keywords-container');
+  const keywordRow = document.createElement('div');
+  keywordRow.className = 'flex items-center space-x-2 keyword-row';
+  keywordRow.innerHTML = `
+    <input type="text" name="product[product_keywords_attributes][${keywordIndex}][keyword]" 
+           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+           placeholder="Enter keyword">
+    <button type="button" onclick="removeKeyword(this)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50 focus:ring-4 focus:outline-none focus:ring-red-300">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+    </button>
+  `;
+  container.appendChild(keywordRow);
+  keywordIndex++;
+}
+
+function removeKeyword(button) {
+  const row = button.closest('.keyword-row');
+  const input = row.querySelector('input[name*="[keyword]"]');
+  const hiddenInput = row.querySelector('input[name*="[id]"]');
+  
+  if (hiddenInput && hiddenInput.value) {
+    // Mark for deletion if it's an existing keyword
+    const destroyInput = document.createElement('input');
+    destroyInput.type = 'hidden';
+    destroyInput.name = hiddenInput.name.replace('[id]', '[_destroy]');
+    destroyInput.value = '1';
+    row.appendChild(destroyInput);
+    row.style.display = 'none';
+  } else {
+    // Remove the row if it's a new keyword
+    row.remove();
+  }
+}
+</script>

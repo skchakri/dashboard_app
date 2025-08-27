@@ -11,7 +11,24 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
           Sign in to your account
         </h1>
-        <%= form_with url: login_path, method: :post, local: true, data: { turbo: false }, class: "space-y-4 md:space-y-6" do |form| %>
+        <%= form_with url: login_path, method: :post, local: true, data: { turbo: false, controller: "company-selector" }, class: "space-y-4 md:space-y-6" do |form| %>
+          <% unless current_company %>
+            <div>
+              <%= form.label :company_id, "Select Company", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Select your company to continue with subdomain login</p>
+              <select name="company_id" id="company_id" required 
+                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                     data-company-selector-target="select"
+                     data-action="change->company-selector#companyChanged">
+                <option value="">Choose your company...</option>
+                <% (@companies || []).each do |company| %>
+                  <option value="<%= company.id %>" data-subdomain="<%= company.subdomain %>">
+                    <%= company.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          <% end %>
           <div>
             <%= form.label :email, "Your email", class: "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
             <%= form.email_field :email, placeholder: "name@company.com", required: true, class: "bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" %>
@@ -37,9 +54,16 @@
           <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg">
             <h3 class="font-semibold text-sm mb-2">Demo Accounts:</h3>
             <div class="text-xs space-y-1">
-              <p><strong>Admin:</strong> admin@dashboard.com</p>
-              <p><strong>User:</strong> user@dashboard.com</p>
-              <p><strong>Password:</strong> password123</p>
+              <% if current_company %>
+                <p><strong>Admin:</strong> admin@<%= current_company.subdomain %>.com</p>
+                <p><strong>User:</strong> user@<%= current_company.subdomain %>.com</p>
+                <p><strong>Password:</strong> password123</p>
+              <% else %>
+                <p><strong>Available Companies:</strong> ACME Corp, Tech Solutions Inc, Global Systems Ltd</p>
+                <p><strong>Admin:</strong> admin@[company].com</p>
+                <p><strong>User:</strong> user@[company].com</p>
+                <p><strong>Password:</strong> password123</p>
+              <% end %>
             </div>
           </div>
         </div>

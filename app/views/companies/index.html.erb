@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Select Your Company - Dashboard App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Flowbite CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gradient-to-br from-blue-600 via-purple-600 to-purple-800 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full mx-4">
+      <div class="bg-white rounded-2xl shadow-2xl p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">Select Your Company</h1>
+          <p class="text-gray-600">Choose your company to access the dashboard</p>
+        </div>
+
+        <!-- Company List -->
+        <div class="space-y-3">
+          <% @companies.each do |company| %>
+            <%= link_to "http://#{company.subdomain}.localhost:3000/login",
+                class: "block w-full p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-200 border border-gray-200 hover:border-blue-300 hover:shadow-md group",
+                data: { turbo: false } do %>
+              <div class="flex items-center">
+                <% if company.icon.attached? %>
+                  <%= image_tag company.icon, class: "w-10 h-10 rounded-lg mr-4" %>
+                <% else %>
+                  <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-4">
+                    <span class="text-white font-bold text-lg"><%= company.name.first %></span>
+                  </div>
+                <% end %>
+                <div class="flex-1">
+                  <h3 class="font-semibold text-gray-900 group-hover:text-blue-600"><%= company.name %></h3>
+                  <p class="text-sm text-gray-500"><%= company.subdomain %>.localhost:3000</p>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Demo Instructions -->
+        <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <div class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+            </svg>
+            <div>
+              <h4 class="text-sm font-semibold text-blue-900 mb-1">Demo Login Credentials</h4>
+              <p class="text-sm text-blue-800">
+                <strong>Admin:</strong> admin@[company].com<br>
+                <strong>User:</strong> user@[company].com<br>
+                <strong>Password:</strong> password123
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+  </body>
+</html>

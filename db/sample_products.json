@@ -1,0 +1,148 @@
+[
+  {
+    "sku": "LAPTOP-001",
+    "status": "active",
+    "stock_quantity": 50,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Professional Laptop 15.6\"",
+    "base_description": "High-performance laptop with Intel Core i7 processor, 16GB RAM, and 512GB SSD. Perfect for business and creative work.",
+    "base_price": 1299.99,
+    "categories": ["Electronics", "Computers", "Laptops"],
+    "keywords": ["laptop", "computer", "business", "portable", "intel", "ssd"],
+    "images": [
+      {
+        "url": "https://example.com/images/laptop-001-front.jpg",
+        "alt_text": "Professional Laptop Front View",
+        "sort_order": 1
+      },
+      {
+        "url": "https://example.com/images/laptop-001-side.jpg", 
+        "alt_text": "Professional Laptop Side View",
+        "sort_order": 2
+      },
+      {
+        "url": "https://example.com/images/laptop-001-keyboard.jpg",
+        "alt_text": "Professional Laptop Keyboard Detail",
+        "sort_order": 3
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "name": "Professional Laptop 15.6\" - US Model",
+        "description": "High-performance laptop with Intel Core i7 processor, 16GB RAM, and 512GB SSD. Includes US keyboard layout and 2-year warranty.",
+        "price": 1299.99,
+        "available": true,
+        "special_price": 1149.99,
+        "special_price_start": "2024-01-01",
+        "special_price_end": "2024-03-31"
+      },
+      "eu": {
+        "market_name": "European Union", 
+        "currency": "EUR",
+        "name": "Professional Laptop 15.6\" - EU Model",
+        "description": "High-performance laptop with Intel Core i7 processor, 16GB RAM, and 512GB SSD. Includes EU keyboard layout and 2-year warranty.",
+        "price": 1199.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP", 
+        "name": "Professional Laptop 15.6\" - UK Model",
+        "description": "High-performance laptop with Intel Core i7 processor, 16GB RAM, and 512GB SSD. Includes UK keyboard layout and 2-year warranty.",
+        "price": 1099.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "PHONE-002",
+    "status": "active",
+    "stock_quantity": 100,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Smartphone Pro Max 256GB",
+    "base_description": "Latest smartphone with advanced camera system, 256GB storage, and all-day battery life.",
+    "base_price": 999.99,
+    "categories": ["Electronics", "Mobile Phones", "Smartphones"],
+    "keywords": ["smartphone", "mobile", "camera", "5g", "wireless"],
+    "images": [
+      {
+        "url": "https://example.com/images/phone-002-front.jpg",
+        "alt_text": "Smartphone Pro Max Front View",
+        "sort_order": 1
+      },
+      {
+        "url": "https://example.com/images/phone-002-back.jpg",
+        "alt_text": "Smartphone Pro Max Back View", 
+        "sort_order": 2
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 999.99,
+        "available": true
+      },
+      "eu": {
+        "market_name": "European Union",
+        "currency": "EUR", 
+        "price": 949.99,
+        "available": true
+      },
+      "asia": {
+        "market_name": "Asia Pacific",
+        "currency": "USD",
+        "name": "Smartphone Pro Max 256GB - Asia Edition",
+        "description": "Latest smartphone with advanced camera system, 256GB storage, all-day battery life, and dual SIM support.",
+        "price": 899.99,
+        "available": true,
+        "special_price": 799.99,
+        "special_price_start": "2024-02-14",
+        "special_price_end": "2024-02-28"
+      }
+    }
+  },
+  {
+    "sku": "HEADPHONES-003", 
+    "status": "active",
+    "stock_quantity": 200,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Wireless Noise-Cancelling Headphones",
+    "base_description": "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
+    "base_price": 299.99,
+    "categories": ["Electronics", "Audio", "Headphones"],
+    "keywords": ["headphones", "wireless", "noise-cancelling", "bluetooth", "audio"],
+    "images": [
+      {
+        "url": "https://example.com/images/headphones-003-main.jpg",
+        "alt_text": "Wireless Noise-Cancelling Headphones",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 299.99,
+        "available": true
+      },
+      "eu": {
+        "market_name": "European Union", 
+        "currency": "EUR",
+        "price": 279.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 249.99,
+        "available": true
+      }
+    }
+  }
+]

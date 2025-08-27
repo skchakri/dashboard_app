@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product: one
+  market: one
+  name: MyString
+  description: MyText
+  price: 9.99
+  available: false
+  special_price: 9.99
+  special_price_start: 2025-08-26
+  special_price_end: 2025-08-26
+
+two:
+  product: two
+  market: two
+  name: MyString
+  description: MyText
+  price: 9.99
+  available: false
+  special_price: 9.99
+  special_price_start: 2025-08-26
+  special_price_end: 2025-08-26

@@ -1,0 +1,344 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <!-- Header with Title and Market Selector -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          <%= @product.display_name(@selected_market) %>
+        </h1>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">
+          SKU: <%= @product.sku %>
+        </p>
+        <div class="flex items-center mt-3 space-x-3">
+          <% case @product.status %>
+          <% when 'active' %>
+            <span class="inline-flex items-center bg-green-100 text-green-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-green-900 dark:text-green-300">
+              <span class="w-2 h-2 mr-2 bg-green-500 rounded-full"></span>
+              Active
+            </span>
+          <% when 'inactive' %>
+            <span class="inline-flex items-center bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+              <span class="w-2 h-2 mr-2 bg-yellow-500 rounded-full"></span>
+              Inactive
+            </span>
+          <% else %>
+            <span class="inline-flex items-center bg-red-100 text-red-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-red-900 dark:text-red-300">
+              <span class="w-2 h-2 mr-2 bg-red-500 rounded-full"></span>
+              Discontinued
+            </span>
+          <% end %>
+          
+          <% if @product.featured %>
+            <span class="inline-flex items-center bg-purple-100 text-purple-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-purple-900 dark:text-purple-300">
+              <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              Featured
+            </span>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Market Selector Dropdown -->
+      <div class="relative">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Market View
+        </label>
+        <div class="relative inline-block text-left" data-controller="dropdown">
+          <button type="button" 
+                  class="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                  data-action="click->dropdown#toggle">
+            <% if @selected_market %>
+              <span class="mr-2"><%= @selected_market.code.upcase %></span>
+              (<%= @selected_market.name %>)
+            <% else %>
+              Global View
+            <% end %>
+            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          
+          <div class="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10 hidden"
+               data-dropdown-target="menu">
+            <div class="py-1">
+              <%= link_to admin_product_path(@product), 
+                    class: "block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 #{'bg-blue-50 dark:bg-blue-900' unless @selected_market}" do %>
+                <div class="flex items-center justify-between">
+                  <span>Global View</span>
+                  <span class="text-xs text-gray-500">(Base data)</span>
+                </div>
+              <% end %>
+              
+              <% @markets.each do |market| %>
+                <%= link_to admin_product_path(@product, market_id: market.id), 
+                      class: "block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 #{'bg-blue-50 dark:bg-blue-900' if @selected_market&.id == market.id}" do %>
+                  <div class="flex items-center justify-between">
+                    <span><%= market.code.upcase %> - <%= market.name %></span>
+                    <span class="text-xs text-gray-500"><%= market.currency %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Left Column: Images -->
+      <div class="space-y-4">
+        <!-- Main Image -->
+        <div class="relative bg-gray-100 rounded-lg overflow-hidden aspect-square">
+          <% if @product.product_images.any? %>
+            <img id="mainImage" 
+                 src="<%= @product.product_images.first.image_url %>" 
+                 alt="<%= @product.product_images.first.alt_text %>"
+                 class="w-full h-full object-cover transition-all duration-300">
+          <% else %>
+            <div class="flex items-center justify-center h-full">
+              <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          <% end %>
+        </div>
+        
+        <!-- Image Carousel/Thumbnails -->
+        <% if @product.product_images.count > 1 %>
+          <div class="grid grid-cols-4 gap-2">
+            <% @product.product_images.each_with_index do |image, index| %>
+              <div class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                   onclick="changeMainImage('<%= image.image_url %>', '<%= image.alt_text %>')">
+                <img src="<%= image.image_url %>" 
+                     alt="<%= image.alt_text %>"
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all"></div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Right Column: Product Details -->
+      <div class="space-y-6">
+        <!-- Price Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Pricing</h3>
+          <div class="space-y-3">
+            <% if @selected_market %>
+              <% market_data = @product.product_markets.find_by(market: @selected_market) %>
+              <% if market_data %>
+                <div class="flex items-center justify-between">
+                  <span class="text-lg text-gray-600 dark:text-gray-400">Current Price:</span>
+                  <span class="text-2xl font-bold text-blue-600">
+                    <%= @selected_market.currency %> <%= number_with_precision(market_data.price || @product.base_price, precision: 2) %>
+                  </span>
+                </div>
+                
+                <% if market_data.special_price.present? %>
+                  <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Special Price:</span>
+                    <span class="text-lg font-semibold text-green-600">
+                      <%= @selected_market.currency %> <%= number_with_precision(market_data.special_price, precision: 2) %>
+                    </span>
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    Valid: <%= market_data.special_price_start&.strftime('%b %d, %Y') %> - <%= market_data.special_price_end&.strftime('%b %d, %Y') %>
+                  </div>
+                <% end %>
+                
+                <div class="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-600">
+                  <span class="text-sm text-gray-600 dark:text-gray-400">Market Availability:</span>
+                  <span class="<%= market_data.available? ? 'text-green-600' : 'text-red-600' %> font-medium">
+                    <%= market_data.available? ? 'Available' : 'Not Available' %>
+                  </span>
+                </div>
+              <% else %>
+                <div class="text-center text-gray-500">
+                  No specific pricing for this market. Using base price.
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-lg text-gray-600 dark:text-gray-400">Base Price:</span>
+                  <span class="text-2xl font-bold text-blue-600">
+                    $<%= number_with_precision(@product.base_price, precision: 2) %>
+                  </span>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="flex items-center justify-between">
+                <span class="text-lg text-gray-600 dark:text-gray-400">Base Price:</span>
+                <span class="text-2xl font-bold text-blue-600">
+                  $<%= number_with_precision(@product.base_price, precision: 2) %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Description</h3>
+          <div class="text-gray-600 dark:text-gray-400 leading-relaxed">
+            <%= simple_format(@product.display_description(@selected_market)) %>
+          </div>
+        </div>
+        
+        <!-- Product Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Product Information</h3>
+          <dl class="space-y-3">
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">SKU:</dt>
+              <dd class="text-sm text-gray-900 dark:text-white font-mono"><%= @product.sku %></dd>
+            </div>
+            
+            <% if @product.track_inventory %>
+              <div class="flex justify-between">
+                <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">Stock Quantity:</dt>
+                <dd class="text-sm font-semibold">
+                  <% if @product.stock_quantity <= 10 %>
+                    <span class="text-red-600"><%= @product.stock_quantity %> (Low Stock)</span>
+                  <% elsif @product.stock_quantity <= 50 %>
+                    <span class="text-yellow-600"><%= @product.stock_quantity %> (Medium Stock)</span>
+                  <% else %>
+                    <span class="text-green-600"><%= @product.stock_quantity %> (In Stock)</span>
+                  <% end %>
+                </dd>
+              </div>
+            <% end %>
+            
+            <div class="flex justify-between">
+              <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">Inventory Tracking:</dt>
+              <dd class="text-sm text-gray-900 dark:text-white">
+                <%= @product.track_inventory? ? 'Enabled' : 'Disabled' %>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        
+        <!-- Categories -->
+        <% if @product.categories.any? %>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Categories</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @product.categories.each do |category| %>
+                <span class="inline-flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                  <%= category.name %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Keywords -->
+        <% if @product.product_keywords.any? %>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Keywords</h3>
+            <div class="flex flex-wrap gap-2">
+              <% @product.product_keywords.each do |keyword| %>
+                <span class="inline-flex items-center bg-gray-100 text-gray-800 text-sm font-medium px-3 py-1 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                  <%= keyword.keyword %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Available Markets -->
+        <% if @product.markets.any? %>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Available Markets</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <% @product.markets.each do |market| %>
+                <% market_data = @product.product_markets.find_by(market: market) %>
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div>
+                    <div class="font-medium text-gray-900 dark:text-white">
+                      <%= market.code.upcase %> - <%= market.name %>
+                    </div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                      <%= market.currency %> <%= number_with_precision(market_data&.price || @product.base_price, precision: 2) %>
+                    </div>
+                  </div>
+                  <span class="<%= market_data&.available? ? 'text-green-600' : 'text-red-600' %> text-sm font-medium">
+                    <%= market_data&.available? ? '✓' : '✗' %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Action Buttons -->
+        <div class="flex space-x-4 pt-6">
+          <%= link_to edit_admin_product_path(@product), 
+                class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            Edit Product
+          <% end %>
+          
+          <%= link_to admin_products_path, 
+                class: "inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Products
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for Image Carousel and Dropdown -->
+<script>
+  // Image carousel functionality
+  function changeMainImage(imageUrl, altText) {
+    const mainImage = document.getElementById('mainImage');
+    if (mainImage) {
+      mainImage.src = imageUrl;
+      mainImage.alt = altText;
+    }
+  }
+
+  // Stimulus controller for dropdown
+  class DropdownController extends ApplicationController {
+    static targets = ["menu"]
+
+    toggle() {
+      this.menuTarget.classList.toggle('hidden');
+    }
+
+    hide(event) {
+      if (!this.element.contains(event.target)) {
+        this.menuTarget.classList.add('hidden');
+      }
+    }
+  }
+
+  // Simple dropdown without Stimulus (fallback)
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('[data-controller="dropdown"]');
+    dropdowns.forEach(dropdown => {
+      const button = dropdown.querySelector('[data-action="click->dropdown#toggle"]');
+      const menu = dropdown.querySelector('[data-dropdown-target="menu"]');
+      
+      if (button && menu) {
+        button.addEventListener('click', function() {
+          menu.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!dropdown.contains(event.target)) {
+            menu.classList.add('hidden');
+          }
+        });
+      }
+    });
+  });
+</script>

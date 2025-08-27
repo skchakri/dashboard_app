@@ -1,0 +1,800 @@
+[
+  {
+    "sku": "LAPTOP-001",
+    "status": "active",
+    "stock_quantity": 50,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Professional Laptop 15.6\"",
+    "base_description": "High-performance laptop with Intel Core i7 processor, 16GB RAM, and 512GB SSD. Perfect for business and creative work.",
+    "base_price": 1299.99,
+    "categories": ["Electronics", "Computers", "Laptops"],
+    "keywords": ["laptop", "computer", "business", "portable", "intel", "ssd"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+        "alt_text": "Professional Laptop Front View",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 1299.99,
+        "available": true,
+        "special_price": 1149.99,
+        "special_price_start": "2024-01-01",
+        "special_price_end": "2024-03-31"
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 999.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 1699.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "PHONE-002",
+    "status": "active",
+    "stock_quantity": 100,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Smartphone Pro Max 256GB",
+    "base_description": "Latest smartphone with advanced camera system, 256GB storage, and all-day battery life.",
+    "base_price": 999.99,
+    "categories": ["Electronics", "Mobile Phones", "Smartphones"],
+    "keywords": ["smartphone", "mobile", "camera", "5g", "wireless"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+        "alt_text": "Smartphone Pro Max",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 999.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 849.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 1349.99,
+        "available": true,
+        "special_price": 1199.99,
+        "special_price_start": "2024-02-01",
+        "special_price_end": "2024-02-29"
+      }
+    }
+  },
+  {
+    "sku": "HEADPHONES-003",
+    "status": "active",
+    "stock_quantity": 200,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Wireless Noise-Cancelling Headphones",
+    "base_description": "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
+    "base_price": 299.99,
+    "categories": ["Electronics", "Audio", "Headphones"],
+    "keywords": ["headphones", "wireless", "noise-cancelling", "bluetooth", "audio"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+        "alt_text": "Wireless Headphones",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 299.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 249.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 399.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "TABLET-004",
+    "status": "active",
+    "stock_quantity": 75,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "iPad Pro 12.9\" 512GB",
+    "base_description": "Professional tablet with M2 chip, stunning Liquid Retina display, and Apple Pencil support.",
+    "base_price": 1199.99,
+    "categories": ["Electronics", "Tablets", "Apple"],
+    "keywords": ["ipad", "tablet", "apple", "m2", "professional", "pencil"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0",
+        "alt_text": "iPad Pro",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 1199.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 999.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 1599.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "WATCH-005",
+    "status": "active",
+    "stock_quantity": 150,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Smart Watch Series 9",
+    "base_description": "Advanced smartwatch with health monitoring, GPS, and cellular connectivity.",
+    "base_price": 399.99,
+    "categories": ["Electronics", "Wearables", "Smart Watches"],
+    "keywords": ["smartwatch", "fitness", "health", "gps", "cellular"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9",
+        "alt_text": "Smart Watch",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 399.99,
+        "available": true,
+        "special_price": 349.99,
+        "special_price_start": "2024-03-01",
+        "special_price_end": "2024-03-15"
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 329.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 529.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "MONITOR-006",
+    "status": "active",
+    "stock_quantity": 40,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "4K Ultra HD Monitor 27\"",
+    "base_description": "Professional 4K monitor with HDR10 support, perfect for content creation and gaming.",
+    "base_price": 549.99,
+    "categories": ["Electronics", "Monitors", "4K"],
+    "keywords": ["monitor", "4k", "hdr", "gaming", "professional"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46",
+        "alt_text": "4K Monitor",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 549.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 449.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 729.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "KEYBOARD-007",
+    "status": "active",
+    "stock_quantity": 300,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Mechanical Gaming Keyboard",
+    "base_description": "RGB backlit mechanical keyboard with Cherry MX switches and programmable keys.",
+    "base_price": 149.99,
+    "categories": ["Electronics", "Gaming", "Keyboards"],
+    "keywords": ["keyboard", "mechanical", "gaming", "rgb", "cherry mx"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1541140532154-b024d705b90a",
+        "alt_text": "Gaming Keyboard",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 149.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 119.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 199.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "MOUSE-008",
+    "status": "active",
+    "stock_quantity": 250,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Wireless Gaming Mouse",
+    "base_description": "High-precision wireless gaming mouse with customizable DPI and RGB lighting.",
+    "base_price": 79.99,
+    "categories": ["Electronics", "Gaming", "Mice"],
+    "keywords": ["mouse", "wireless", "gaming", "precision", "dpi", "rgb"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1527814050087-3793815479db",
+        "alt_text": "Gaming Mouse",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 79.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 64.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 106.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "SPEAKER-009",
+    "status": "active",
+    "stock_quantity": 80,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Bluetooth Portable Speaker",
+    "base_description": "Waterproof Bluetooth speaker with 360-degree sound and 20-hour battery life.",
+    "base_price": 199.99,
+    "categories": ["Electronics", "Audio", "Speakers"],
+    "keywords": ["speaker", "bluetooth", "portable", "waterproof", "360-degree"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1",
+        "alt_text": "Bluetooth Speaker",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 199.99,
+        "available": true,
+        "special_price": 159.99,
+        "special_price_start": "2024-04-01",
+        "special_price_end": "2024-04-30"
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 159.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 269.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "CAMERA-010",
+    "status": "active",
+    "stock_quantity": 25,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Mirrorless Camera Body",
+    "base_description": "Professional mirrorless camera with 24MP sensor and 4K video recording.",
+    "base_price": 1899.99,
+    "categories": ["Electronics", "Cameras", "Photography"],
+    "keywords": ["camera", "mirrorless", "24mp", "4k", "photography", "professional"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a",
+        "alt_text": "Mirrorless Camera",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 1899.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 1549.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 2549.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "CHARGER-011",
+    "status": "active",
+    "stock_quantity": 500,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "USB-C Fast Charger 65W",
+    "base_description": "Universal USB-C charger with GaN technology for laptops, tablets, and phones.",
+    "base_price": 49.99,
+    "categories": ["Electronics", "Accessories", "Chargers"],
+    "keywords": ["charger", "usb-c", "65w", "gan", "universal", "fast"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1583394838336-acd977736f90",
+        "alt_text": "USB-C Charger",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 49.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 39.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 66.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "CABLE-012",
+    "status": "active",
+    "stock_quantity": 1000,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Thunderbolt 4 Cable 2m",
+    "base_description": "High-speed Thunderbolt 4 cable supporting 40Gbps data transfer and 100W charging.",
+    "base_price": 79.99,
+    "categories": ["Electronics", "Accessories", "Cables"],
+    "keywords": ["cable", "thunderbolt", "40gbps", "100w", "charging", "data"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
+        "alt_text": "Thunderbolt Cable",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 79.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 64.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 106.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "WEBCAM-013",
+    "status": "active",
+    "stock_quantity": 120,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "4K Webcam with Auto Focus",
+    "base_description": "Professional 4K webcam with auto focus, noise reduction, and wide-angle lens.",
+    "base_price": 159.99,
+    "categories": ["Electronics", "Cameras", "Webcams"],
+    "keywords": ["webcam", "4k", "autofocus", "professional", "streaming", "conference"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04",
+        "alt_text": "4K Webcam",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 159.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 129.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 214.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "MICROPHONE-014",
+    "status": "active",
+    "stock_quantity": 90,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "USB Condenser Microphone",
+    "base_description": "Professional USB condenser microphone for podcasting, streaming, and recording.",
+    "base_price": 199.99,
+    "categories": ["Electronics", "Audio", "Microphones"],
+    "keywords": ["microphone", "condenser", "usb", "podcasting", "streaming", "recording"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc",
+        "alt_text": "USB Microphone",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 199.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 159.99,
+        "available": true,
+        "special_price": 139.99,
+        "special_price_start": "2024-05-01",
+        "special_price_end": "2024-05-31"
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 269.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "ROUTER-015",
+    "status": "active",
+    "stock_quantity": 60,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Wi-Fi 6E Router",
+    "base_description": "High-performance Wi-Fi 6E router with mesh support and advanced security features.",
+    "base_price": 299.99,
+    "categories": ["Electronics", "Networking", "Routers"],
+    "keywords": ["router", "wifi-6e", "mesh", "security", "networking", "wireless"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8",
+        "alt_text": "Wi-Fi Router",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 299.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 249.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 399.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "DRIVE-016",
+    "status": "active",
+    "stock_quantity": 200,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Portable SSD 2TB",
+    "base_description": "Ultra-fast portable SSD with USB-C connectivity and hardware encryption.",
+    "base_price": 249.99,
+    "categories": ["Electronics", "Storage", "SSD"],
+    "keywords": ["ssd", "portable", "2tb", "usb-c", "encryption", "storage"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16d",
+        "alt_text": "Portable SSD",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 249.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 199.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 334.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "STAND-017",
+    "status": "active",
+    "stock_quantity": 150,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Adjustable Laptop Stand",
+    "base_description": "Ergonomic aluminum laptop stand with adjustable height and angle.",
+    "base_price": 89.99,
+    "categories": ["Electronics", "Accessories", "Stands"],
+    "keywords": ["laptop stand", "adjustable", "ergonomic", "aluminum", "portable"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1586953208448-b95a79798f07",
+        "alt_text": "Laptop Stand",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 89.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 72.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 120.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "CASE-018",
+    "status": "active",
+    "stock_quantity": 400,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "iPhone 15 Pro Case",
+    "base_description": "Premium leather case with MagSafe compatibility and card storage.",
+    "base_price": 59.99,
+    "categories": ["Electronics", "Accessories", "Phone Cases"],
+    "keywords": ["iphone case", "leather", "magsafe", "premium", "card storage"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2",
+        "alt_text": "iPhone Case",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 59.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 49.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 80.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "POWERBANK-019",
+    "status": "active",
+    "stock_quantity": 300,
+    "track_inventory": true,
+    "featured": true,
+    "base_name": "Wireless Power Bank 20000mAh",
+    "base_description": "High-capacity wireless power bank with fast charging and digital display.",
+    "base_price": 79.99,
+    "categories": ["Electronics", "Accessories", "Power Banks"],
+    "keywords": ["power bank", "wireless", "20000mah", "fast charging", "portable"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1609592806596-0e28ba5d4a5b",
+        "alt_text": "Wireless Power Bank",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 79.99,
+        "available": true,
+        "special_price": 69.99,
+        "special_price_start": "2024-06-01",
+        "special_price_end": "2024-06-15"
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 64.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 107.99,
+        "available": true
+      }
+    }
+  },
+  {
+    "sku": "GLASSES-020",
+    "status": "active",
+    "stock_quantity": 100,
+    "track_inventory": true,
+    "featured": false,
+    "base_name": "Blue Light Blocking Glasses",
+    "base_description": "Computer glasses with blue light filtering and anti-glare coating.",
+    "base_price": 39.99,
+    "categories": ["Electronics", "Accessories", "Computer Glasses"],
+    "keywords": ["blue light", "computer glasses", "anti-glare", "eye protection", "filter"],
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1574258495973-f010dfbb5371",
+        "alt_text": "Blue Light Glasses",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "market_name": "United States",
+        "currency": "USD",
+        "price": 39.99,
+        "available": true
+      },
+      "uk": {
+        "market_name": "United Kingdom",
+        "currency": "GBP",
+        "price": 32.99,
+        "available": true
+      },
+      "ca": {
+        "market_name": "Canada",
+        "currency": "CAD",
+        "price": 53.99,
+        "available": true
+      }
+    }
+  }
+]

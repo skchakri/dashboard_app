@@ -1,0 +1,205 @@
+<div class="p-4 sm:ml-64">
+  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
+            Products Management
+          </h1>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Manage your company's product catalog with multi-market support
+          </p>
+        </div>
+        <div class="flex items-center space-x-3">
+          <%= link_to upload_admin_products_path, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" do %>
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+            </svg>
+            Upload Products
+          <% end %>
+          <%= link_to new_admin_product_path, class: "inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" do %>
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 5.757l7.071 7.071M10 5.757L2.929 12.828M10 5.757V18"/>
+            </svg>
+            Add Product
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Company Info -->
+    <% if @target_company %>
+      <div class="mb-6">
+        <div class="flex items-center p-4 text-sm text-blue-800 border border-blue-300 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800">
+          <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Managing products for:</span> <%= @target_company.name %>
+            <% if current_company&.subdomain == 'default' %>
+              (<%= @target_company.subdomain %>)
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Products Table -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <% if @products.any? %>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3">Product</th>
+              <th scope="col" class="px-6 py-3">SKU</th>
+              <th scope="col" class="px-6 py-3">Status</th>
+              <th scope="col" class="px-6 py-3">Categories</th>
+              <th scope="col" class="px-6 py-3">Markets</th>
+              <th scope="col" class="px-6 py-3">Base Price</th>
+              <th scope="col" class="px-6 py-3">Stock</th>
+              <th scope="col" class="px-6 py-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @products.each do |product| %>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="px-6 py-4">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <% if product.product_images.any? %>
+                        <div class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
+                          <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                          </svg>
+                        </div>
+                      <% else %>
+                        <div class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                          <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                          </svg>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900 dark:text-white">
+                        <%= product.base_name %>
+                      </div>
+                      <div class="text-sm text-gray-500 dark:text-gray-300 truncate max-w-xs">
+                        <%= truncate(product.base_description, length: 60) %>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                  <%= product.sku %>
+                </td>
+                <td class="px-6 py-4">
+                  <% case product.status %>
+                  <% when 'active' %>
+                    <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                      <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+                      Active
+                    </span>
+                  <% when 'inactive' %>
+                    <span class="inline-flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                      <span class="w-2 h-2 mr-1 bg-yellow-500 rounded-full"></span>
+                      Inactive
+                    </span>
+                  <% else %>
+                    <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                      <span class="w-2 h-2 mr-1 bg-red-500 rounded-full"></span>
+                      Discontinued
+                    </span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex flex-wrap gap-1">
+                    <% product.categories.limit(2).each do |category| %>
+                      <span class="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                        <%= category.name %>
+                      </span>
+                    <% end %>
+                    <% if product.categories.count > 2 %>
+                      <span class="text-xs text-gray-500">+<%= product.categories.count - 2 %> more</span>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex flex-wrap gap-1">
+                    <% product.markets.limit(3).each do |market| %>
+                      <span class="inline-flex items-center bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
+                        <%= market.code.upcase %>
+                      </span>
+                    <% end %>
+                    <% if product.markets.count > 3 %>
+                      <span class="text-xs text-gray-500">+<%= product.markets.count - 3 %> more</span>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                  $<%= number_with_precision(product.base_price, precision: 2) %>
+                </td>
+                <td class="px-6 py-4">
+                  <% if product.track_inventory %>
+                    <% if product.stock_quantity <= 10 %>
+                      <span class="text-red-600 font-medium"><%= product.stock_quantity %></span>
+                    <% elsif product.stock_quantity <= 50 %>
+                      <span class="text-yellow-600 font-medium"><%= product.stock_quantity %></span>
+                    <% else %>
+                      <span class="text-green-600 font-medium"><%= product.stock_quantity %></span>
+                    <% end %>
+                  <% else %>
+                    <span class="text-gray-500">N/A</span>
+                  <% end %>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center space-x-2">
+                    <%= link_to admin_product_path(product), class: "font-medium text-blue-600 dark:text-blue-500 hover:underline" do %>
+                      View
+                    <% end %>
+                    <%= link_to edit_admin_product_path(product), class: "font-medium text-green-600 dark:text-green-500 hover:underline" do %>
+                      Edit
+                    <% end %>
+                    <%= link_to admin_product_path(product), method: :delete, 
+                        class: "font-medium text-red-600 dark:text-red-500 hover:underline",
+                        data: { 
+                          confirm: "Are you sure you want to delete this product?",
+                          turbo_method: :delete 
+                        } do %>
+                      Delete
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center py-16 bg-white dark:bg-gray-800">
+          <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No products found</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Get started by adding your first product or importing products in bulk.</p>
+          <div class="flex space-x-4">
+            <%= link_to upload_admin_products_path, class: "inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+              Import Products
+            <% end %>
+            <%= link_to new_admin_product_path, class: "inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Add Product
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

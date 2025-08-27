@@ -1,24 +1,47 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    resources :users, only: [:index, :create, :destroy, :new] do
-      member do
-        delete :destroy
+  # Subdomain constraints for company-specific routing
+  constraints subdomain: /acme|techsolutions|globalsystems|default/ do
+    namespace :admin do
+      resources :users, only: [:index, :create, :destroy, :new] do
+        member do
+          delete :destroy
+        end
       end
+      resources :products do
+        collection do
+          get :upload
+          post :import
+        end
+      end
+      resources :categories, only: [:index, :create, :destroy, :new]
+      resources :markets, only: [:index, :create, :destroy, :new]
     end
+    
+    # Authentication routes with subdomain
+    get "login", to: "sessions#new"
+    post "login", to: "sessions#create"
+    delete "logout", to: "sessions#destroy"
+    get "logout", to: "sessions#destroy"
+
+    # Dashboard routes with subdomain
+    get "dashboard", to: "dashboard#index"
+    get "admin_dashboard", to: "dashboard#admin"
+
+    # Root route for subdomains
+    root "sessions#new", as: :company_root
   end
-  # Authentication routes
+
+  # Default routes (no subdomain)
+  get "companies", to: "companies#index"
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
-  get "logout", to: "sessions#destroy"
+  
+  # Main root route - show company selection
+  root "companies#index"
 
-  # Dashboard routes
-  get "dashboard", to: "dashboard#index"
-  get "admin_dashboard", to: "dashboard#admin"
-
-  # Root route
-  root "sessions#new"
-
+  # Debug route for subdomain testing
+  get "debug/subdomain", to: "debug#subdomain_test"
+  
   # Health check and PWA routes
   get "up" => "rails/health#show", as: :rails_health_check
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
