@@ -32,6 +32,9 @@ gem "bcrypt", "~> 3.1.7"
 # Active Storage for file uploads
 gem "image_processing", "~> 1.2"
 
+# AI content generation
+gem "ruby_llm", "~> 1.6.0"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
 

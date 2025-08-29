@@ -1,0 +1,1075 @@
+<div class="max-w-4xl mx-auto">
+  <!-- Header -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center space-x-3">
+        <%= link_to promote_product_path(@product), class: "text-blue-600 hover:text-blue-800" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        <% end %>
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Generated Content</h1>
+      </div>
+      <div class="flex space-x-3">
+        <%= link_to promote_product_path(@product), 
+            class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Generate New
+        <% end %>
+      </div>
+    </div>
+    <p class="text-gray-600 dark:text-gray-400">Your AI-generated social media content is ready!</p>
+  </div>
+
+  <!-- Product Info (Compact) -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 p-4">
+    <div class="flex items-center space-x-3">
+      <% if @product.product_images.any? %>
+        <img src="<%= @product.product_images.first.image_url %>" 
+             alt="<%= @product.product_images.first.alt_text %>"
+             class="w-12 h-12 rounded-lg object-cover">
+      <% end %>
+      <div class="flex-1">
+        <h3 class="text-sm font-medium text-gray-900 dark:text-white">
+          <%= @product.display_name(@user_market) %>
+        </h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          <%= @user_market&.currency || '$' %><%= number_with_precision(@product.display_price(@user_market), precision: 2) %> • <%= @user_market&.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generated Content -->
+  <div class="space-y-6">
+    <% @generated_content.each_with_index do |content, index| %>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+        <!-- Content Header -->
+        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-750 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0">
+                <% platform_icon = case content[:platform]
+                     when 'facebook' then { color: 'text-blue-600', icon: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' }
+                     when 'instagram' then { color: 'text-pink-600', icon: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z' }
+                     when 'twitter' then { color: 'text-sky-500', icon: 'M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z' }
+                     when 'linkedin' then { color: 'text-blue-700', icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' }
+                     else { color: 'text-gray-600', icon: 'M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7Z' }
+                   end %>
+                <div class="w-6 h-6 <%= platform_icon[:color] %>">
+                  <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="<%= platform_icon[:icon] %>"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-900 dark:text-white capitalize">
+                  <%= content[:platform] %> Post
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  <%= content[:character_count] %> characters
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <button type="button" 
+                      onclick="saveEditedContent('<%= content[:platform] %>')"
+                      class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Save
+              </button>
+              <button type="button" 
+                      onclick="copyEditedContent('<%= content[:platform] %>')"
+                      class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Body -->
+        <div class="p-6">
+          <!-- Rich Text Editor Toolbar -->
+          <div class="mb-3 border-b border-gray-200 dark:border-gray-600 pb-3">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-3">
+                <span class="text-gray-700 dark:text-gray-300 font-medium">Content Source:</span>
+                <select onchange="switchContentSource('<%= content[:platform] %>', this.value)"
+                        class="text-xs border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="ai_generated">AI Generated</option>
+                  <option value="custom">Custom Content</option>
+                  <option value="template">Template Based</option>
+                </select>
+              </div>
+              <button type="button" 
+                      onclick="regenerateContent('<%= content[:platform] %>')"
+                      class="px-2 py-1 text-xs rounded bg-blue-100 hover:bg-blue-200 dark:bg-blue-600 dark:hover:bg-blue-500 text-blue-700 dark:text-blue-300"
+                      title="Regenerate content">
+                <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Regenerate
+              </button>
+            </div>
+            <div class="flex items-center space-x-2 text-sm">
+              <span class="text-gray-700 dark:text-gray-300 font-medium">Edit Content:</span>
+              <div class="flex items-center space-x-1 ml-4">
+                <button type="button" 
+                        onclick="formatText('bold', '<%= content[:platform] %>')" 
+                        class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+                        title="Bold">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"></path>
+                  </svg>
+                </button>
+                <button type="button" 
+                        onclick="formatText('italic', '<%= content[:platform] %>')" 
+                        class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+                        title="Italic">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 4l-2 14m4 0l2-14"></path>
+                  </svg>
+                </button>
+                <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                <div class="flex items-center space-x-1">
+                  <!-- Emotions -->
+                  <button type="button" onclick="insertEmoji('😊', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Happy">😊</button>
+                  <button type="button" onclick="insertEmoji('😍', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Love">😍</button>
+                  <button type="button" onclick="insertEmoji('🤩', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Star Eyes">🤩</button>
+                  <button type="button" onclick="insertEmoji('😎', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Cool">😎</button>
+                  
+                  <!-- Actions & Objects -->
+                  <button type="button" onclick="insertEmoji('🚀', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Rocket">🚀</button>
+                  <button type="button" onclick="insertEmoji('⚡', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Lightning">⚡</button>
+                  <button type="button" onclick="insertEmoji('🔥', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Fire">🔥</button>
+                  <button type="button" onclick="insertEmoji('✨', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Sparkles">✨</button>
+                  
+                  <!-- Celebration -->
+                  <button type="button" onclick="insertEmoji('🎉', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Party">🎉</button>
+                  <button type="button" onclick="insertEmoji('🎊', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Confetti">🎊</button>
+                  <button type="button" onclick="insertEmoji('🥳', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Party Face">🥳</button>
+                  
+                  <!-- Business & Success -->
+                  <button type="button" onclick="insertEmoji('💼', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Briefcase">💼</button>
+                  <button type="button" onclick="insertEmoji('💡', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Idea">💡</button>
+                  <button type="button" onclick="insertEmoji('💰', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Money">💰</button>
+                  <button type="button" onclick="insertEmoji('📈', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Chart Up">📈</button>
+                  
+                  <!-- Hearts & Positive -->
+                  <button type="button" onclick="insertEmoji('❤️', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Heart">❤️</button>
+                  <button type="button" onclick="insertEmoji('💙', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Blue Heart">💙</button>
+                  <button type="button" onclick="insertEmoji('👍', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Thumbs Up">👍</button>
+                  <button type="button" onclick="insertEmoji('👏', '<%= content[:platform] %>')" class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600" title="Clap">👏</button>
+                </div>
+                <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+                <button type="button" 
+                        onclick="checkCharacterCount('<%= content[:platform] %>')" 
+                        class="px-2 py-1 text-xs rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300"
+                        title="Check character count">
+                  Count
+                </button>
+                <button type="button" 
+                        onclick="resetContent('<%= content[:platform] %>', `<%= content[:content].gsub('`', '\`').gsub('\\', '\\\\') %>`)" 
+                        class="px-2 py-1 text-xs rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-500 text-red-600 dark:text-red-400"
+                        title="Reset to original">
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editable Content Area -->
+          <div class="prose prose-sm max-w-none"
+               data-controller="content-editor"
+               data-content-editor-platform-value="<%= content[:platform] %>"
+               data-content-editor-max-chars-value="<%= content[:max_chars] %>">
+            <div id="content-editor-<%= content[:platform] %>"
+                 class="whitespace-pre-wrap text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none min-h-[120px]"
+                 contenteditable="true"
+                 data-content-editor-target="editor"
+                 data-original-content="<%= content[:content] %>"
+                 spellcheck="true"><%= content[:content] %></div>
+            
+            <!-- Character Counter -->
+            <div class="mt-2 flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+              <span data-content-editor-target="charCount" id="char-count-<%= content[:platform] %>">
+                <span id="current-chars-<%= content[:platform] %>"><%= content[:content].length %></span> / 
+                <span class="<%= content[:content].length > content[:max_chars] ? 'text-red-600' : '' %>"><%= content[:max_chars] %></span> characters
+              </span>
+              <span data-content-editor-target="charStatus" id="char-status-<%= content[:platform] %>" class="<%= content[:content].length > content[:max_chars] ? 'text-red-600' : 'text-green-600' %>">
+                <%= content[:content].length > content[:max_chars] ? 'Over limit!' : 'Good' %>
+              </span>
+            </div>
+          </div>
+          
+          <% if content[:hashtags].present? %>
+            <div class="mt-4">
+              <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Suggested Hashtags:</h4>
+              <div class="flex flex-wrap gap-2">
+                <% content[:hashtags].each do |hashtag| %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    #<%= hashtag %>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Generate Different Content Button -->
+          <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+            <%= link_to promote_product_path(@product), 
+                class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Generate Different Content
+            <% end %>
+          </div>
+
+          <!-- Generated Images Section -->
+          <% if content[:images].present? %>
+            <div class="mt-6 border-t border-gray-200 dark:border-gray-600 pt-6">
+              <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4">Generated Images (<%= content[:images].first[:size] %>)</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <% content[:images].each_with_index do |image, img_index| %>
+                  <div class="relative group cursor-pointer" 
+                       data-controller="image-selector"
+                       data-image-url="<%= image[:url] %>"
+                       data-image-id="<%= image[:id] %>">
+                    <div class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors">
+                      <img src="<%= image[:url] %>" 
+                           alt="Generated image for <%= content[:platform] %> - Variant <%= image[:variant] %>"
+                           class="w-full <%= content[:platform] == 'instagram' ? 'h-32' : 'h-24' %> object-cover group-hover:opacity-90 transition-opacity"
+                           loading="lazy"
+                           onerror="this.onerror=null; this.src='https://via.placeholder.com/<%= image[:size] %>/e5e7eb/6b7280?text=Image+<%= image[:variant] %>'; this.nextElementSibling.querySelector('.bg-green-100, .bg-gray-100').className='inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800'; this.nextElementSibling.querySelector('.bg-green-100, .bg-gray-100').textContent='Error'">
+                      
+                      <!-- Image Selection Overlay -->
+                      <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button type="button" 
+                                  onclick="selectImage('<%= image[:url] %>', '<%= image[:id] %>', '<%= content[:platform] %>')"
+                                  class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Select
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <!-- Image Type Badge -->
+                      <div class="absolute top-2 right-2">
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium <%= 
+                          case image[:type] 
+                          when 'ai_generated' 
+                            'bg-green-100 text-green-800' 
+                          when 'stock_photo'
+                            'bg-blue-100 text-blue-800'
+                          when 'generated_placeholder'
+                            'bg-purple-100 text-purple-800'
+                          when 'text_placeholder'
+                            'bg-yellow-100 text-yellow-800'
+                          else 
+                            'bg-gray-100 text-gray-800' 
+                          end %>">
+                          <%= 
+                            case image[:type] 
+                            when 'ai_generated' 
+                              'AI' 
+                            when 'stock_photo'
+                              'Stock'
+                            when 'generated_placeholder'
+                              'Demo'
+                            when 'text_placeholder'
+                              'Text'
+                            else 
+                              'Photo' 
+                            end %>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <!-- Image Actions -->
+                    <div class="mt-2 flex justify-between items-center">
+                      <span class="text-xs text-gray-500">Variant <%= image[:variant] %></span>
+                      <div class="flex space-x-1">
+                        <button type="button"
+                                onclick="downloadImage('<%= image[:url] %>', '<%= "#{content[:platform]}_#{image[:variant]}.jpg" %>')"
+                                class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                                title="Download image">
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </button>
+                        <button type="button"
+                                onclick="copyImageUrl('<%= image[:url] %>')"
+                                class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                                title="Copy image URL">
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+              
+              <!-- Generate Alternate Images Button -->
+              <div class="mt-4 text-center">
+                <button type="button" 
+                        onclick="generateAlternateImages('<%= content[:platform] %>')"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Generate Alternate Images
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Social Media Posting Section -->
+  <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Post to Social Media</h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Share your content directly to your connected social media accounts</p>
+    
+    <!-- Social Platform Selection for Posting -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <% @generated_content.each do |content| %>
+        <label class="relative border border-gray-200 dark:border-gray-700 rounded-lg p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors has-[:checked]:bg-blue-50 has-[:checked]:border-blue-500">
+          <input type="checkbox" name="post_platforms" value="<%= content[:platform] %>" class="absolute top-2 right-2 w-4 h-4 text-blue-600 focus:ring-blue-500" onchange="updatePlatformStatus('<%= content[:platform] %>')">
+          
+          <!-- Status Indicator -->
+          <div id="status-<%= content[:platform] %>" class="absolute top-2 left-2 flex space-x-1">
+            <span id="content-status-<%= content[:platform] %>" class="w-2 h-2 rounded-full bg-green-500" title="Content available"></span>
+            <span id="image-status-<%= content[:platform] %>" class="w-2 h-2 rounded-full bg-gray-300" title="No image selected"></span>
+          </div>
+          
+          <div class="text-center mt-2">
+            <% platform_details = case content[:platform]
+                 when 'facebook' then { color: 'text-blue-600', name: 'Facebook' }
+                 when 'instagram' then { color: 'text-pink-600', name: 'Instagram' }
+                 when 'twitter' then { color: 'text-sky-500', name: 'Twitter' }
+                 when 'linkedin' then { color: 'text-blue-700', name: 'LinkedIn' }
+               end %>
+            <div class="w-6 h-6 mx-auto mb-1 <%= platform_details[:color] %>">
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <% case content[:platform]
+                   when 'facebook' %>
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                <% when 'instagram' %>
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                <% when 'twitter' %>
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                <% when 'linkedin' %>
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <% end %>
+              </svg>
+            </div>
+            <span class="text-xs font-medium text-gray-900 dark:text-white"><%= platform_details[:name] %></span>
+          </div>
+        </label>
+      <% end %>
+    </div>
+
+    <!-- Posting Options -->
+    <div class="flex items-center space-x-4 mb-4">
+      <label class="flex items-center">
+        <input type="checkbox" id="schedule_post" class="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+        <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Schedule for later</span>
+      </label>
+      <div id="schedule_options" class="hidden flex items-center space-x-2">
+        <input type="datetime-local" 
+               class="text-xs border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center">
+      <%= link_to dashboard_path, 
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Dashboard
+      <% end %>
+      
+      <button type="button" 
+              onclick="postToSocialMedia()"
+              class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+        Post Content
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      showNotification('Content copied to clipboard!', 'success');
+    }, function(err) {
+      console.error('Could not copy text: ', err);
+      showNotification('Failed to copy content', 'error');
+    });
+  }
+
+  function saveEditedContent(platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const editedText = editor.innerText || editor.textContent || '';
+    const originalContent = editor.dataset.originalContent;
+    
+    // Update the dataset to reflect the save
+    editor.dataset.originalContent = editedText;
+    
+    // Save to localStorage for persistence
+    const storageKey = `promotion_content_${platform}_<%= @product.id %>`;
+    localStorage.setItem(storageKey, editedText);
+    
+    // Visual feedback
+    const saveButton = event.target.closest('button');
+    const originalText = saveButton.innerHTML;
+    
+    // Temporarily change button to show saved state
+    saveButton.innerHTML = `
+      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      Saved!
+    `;
+    saveButton.disabled = true;
+    
+    // Reset button after 2 seconds
+    setTimeout(() => {
+      saveButton.innerHTML = originalText;
+      saveButton.disabled = false;
+    }, 2000);
+    
+    showNotification(`Content saved for ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, 'success');
+  }
+
+  function copyEditedContent(platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const editedText = editor.innerText || editor.textContent || '';
+    
+    navigator.clipboard.writeText(editedText).then(function() {
+      showNotification('Edited content copied to clipboard!', 'success');
+    }, function(err) {
+      console.error('Could not copy edited content: ', err);
+      showNotification('Failed to copy edited content', 'error');
+    });
+  }
+
+  function formatText(command, platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    editor.focus();
+    
+    // Save selection before executing command
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      document.execCommand(command, false, null);
+      updateCharacterCount(platform);
+    } else {
+      showNotification('Please select text to format', 'warning');
+    }
+  }
+
+  function insertEmoji(emoji, platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const selection = window.getSelection();
+    
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      
+      const emojiNode = document.createTextNode(emoji);
+      range.insertNode(emojiNode);
+      
+      // Move cursor after emoji
+      range.setStartAfter(emojiNode);
+      range.setEndAfter(emojiNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } else {
+      // If no selection, append to end
+      editor.focus();
+      const textNode = document.createTextNode(emoji);
+      editor.appendChild(textNode);
+      
+      // Move cursor to end
+      const range = document.createRange();
+      range.setStartAfter(textNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+    updateCharacterCount(platform);
+  }
+
+  function updateCharacterCount(platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const currentChars = editor.innerText.length || 0;
+    const maxChars = parseInt(editor.dataset.contentEditorMaxChars);
+    
+    const currentCharsElement = document.getElementById(`current-chars-${platform}`);
+    const statusElement = document.getElementById(`char-status-${platform}`);
+    
+    if (currentCharsElement) {
+      currentCharsElement.textContent = currentChars;
+    }
+    
+    if (statusElement) {
+      if (currentChars > maxChars) {
+        statusElement.textContent = 'Over limit!';
+        statusElement.className = 'text-red-600 font-medium';
+        editor.classList.add('border-red-500', 'ring-red-200');
+        editor.classList.remove('border-gray-300', 'dark:border-gray-600');
+      } else if (currentChars > maxChars * 0.9) {
+        statusElement.textContent = 'Getting close';
+        statusElement.className = 'text-yellow-600 font-medium';
+        editor.classList.add('border-yellow-500', 'ring-yellow-200');
+        editor.classList.remove('border-gray-300', 'dark:border-gray-600', 'border-red-500', 'ring-red-200');
+      } else {
+        statusElement.textContent = 'Good';
+        statusElement.className = 'text-green-600';
+        editor.classList.remove('border-red-500', 'ring-red-200', 'border-yellow-500', 'ring-yellow-200');
+        editor.classList.add('border-gray-300', 'dark:border-gray-600');
+      }
+    }
+  }
+
+  function checkCharacterCount(platform) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const currentChars = editor.innerText.length || 0;
+    const maxChars = parseInt(editor.dataset.contentEditorMaxChars);
+    const remaining = maxChars - currentChars;
+    
+    if (remaining >= 0) {
+      showNotification(`${currentChars} characters used, ${remaining} remaining`, 'info');
+    } else {
+      showNotification(`${Math.abs(remaining)} characters over limit!`, 'error');
+    }
+  }
+
+  function resetContent(platform, originalContent) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    editor.innerHTML = originalContent;
+    editor.dataset.originalContent = originalContent;
+    
+    // Clear saved content from localStorage
+    const storageKey = `promotion_content_${platform}_<%= @product.id %>`;
+    localStorage.removeItem(storageKey);
+    
+    updateCharacterCount(platform);
+    showNotification('Content reset to original and saved content cleared', 'info');
+  }
+
+  function handlePaste(event, platform) {
+    event.preventDefault();
+    
+    // Get pasted text as plain text
+    const pastedText = (event.clipboardData || window.clipboardData).getData('text/plain');
+    
+    // Insert plain text at cursor position
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      
+      const textNode = document.createTextNode(pastedText);
+      range.insertNode(textNode);
+      
+      // Move cursor after pasted text
+      range.setStartAfter(textNode);
+      range.setEndAfter(textNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+    updateCharacterCount(platform);
+  }
+
+  function selectImage(imageUrl, imageId, platform) {
+    // Remove previous selections for this platform
+    document.querySelectorAll(`[data-image-id*="${platform}"]`).forEach(el => {
+      el.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
+      const button = el.querySelector('.bg-blue-600');
+      if (button) {
+        button.innerHTML = `
+          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Select
+        `;
+      }
+    });
+    
+    // Mark this image as selected
+    const selectedElement = document.querySelector(`[data-image-id="${imageId}"]`);
+    if (selectedElement) {
+      selectedElement.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
+      const button = selectedElement.querySelector('.bg-blue-600');
+      if (button) {
+        button.innerHTML = `
+          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Selected
+        `;
+      }
+    }
+    
+    // Update platform status indicator
+    updatePlatformStatus(platform);
+    
+    showNotification(`Selected image for ${platform.charAt(0).toUpperCase() + platform.slice(1)}`, 'success');
+  }
+
+  function updatePlatformStatus(platform) {
+    const contentStatus = document.getElementById(`content-status-${platform}`);
+    const imageStatus = document.getElementById(`image-status-${platform}`);
+    
+    if (contentStatus && imageStatus) {
+      // Check content
+      const editor = document.getElementById(`content-editor-${platform}`);
+      const hasContent = editor && (editor.innerText || editor.textContent || '').trim().length > 0;
+      
+      // Check image selection
+      const hasSelectedImage = document.querySelector(`[data-image-id*="${platform}"].ring-2`);
+      
+      // Update status indicators
+      contentStatus.className = `w-2 h-2 rounded-full ${hasContent ? 'bg-green-500' : 'bg-gray-300'}`;
+      contentStatus.title = hasContent ? 'Content available' : 'No content';
+      
+      imageStatus.className = `w-2 h-2 rounded-full ${hasSelectedImage ? 'bg-green-500' : 'bg-gray-300'}`;
+      imageStatus.title = hasSelectedImage ? 'Image selected' : 'No image selected';
+    }
+  }
+
+  function downloadImage(imageUrl, filename) {
+    fetch(imageUrl)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        showNotification('Image download started', 'success');
+      })
+      .catch(err => {
+        console.error('Download failed:', err);
+        // Fallback: open in new tab
+        window.open(imageUrl, '_blank');
+        showNotification('Opening image in new tab', 'info');
+      });
+  }
+
+  function copyImageUrl(imageUrl) {
+    navigator.clipboard.writeText(imageUrl).then(function() {
+      showNotification('Image URL copied to clipboard!', 'success');
+    }, function(err) {
+      console.error('Could not copy image URL: ', err);
+      showNotification('Failed to copy image URL', 'error');
+    });
+  }
+
+  function switchContentSource(platform, source) {
+    const editor = document.getElementById(`content-editor-${platform}`);
+    const templates = {
+      custom: '',
+      template: getTemplateContent(platform),
+      ai_generated: editor.dataset.originalContent
+    };
+    
+    if (templates[source] !== undefined) {
+      editor.innerHTML = templates[source];
+      updateCharacterCount(platform);
+      showNotification(`Switched to ${source.replace('_', ' ')} content for ${platform}`, 'info');
+    }
+  }
+
+  function getTemplateContent(platform) {
+    const templates = {
+      facebook: "🌟 Check out our amazing product! Perfect for your needs and built with quality in mind. #Quality #Innovation",
+      instagram: "✨ New product alert! 📸 Tag a friend who needs this! #NewProduct #MustHave #ShareWithFriends",
+      twitter: "🚀 Exciting news! Our latest product is here. What do you think? #Launch #Innovation",
+      linkedin: "We're excited to announce our latest product innovation. Built for professionals who value quality and efficiency. #Business #Innovation #Quality"
+    };
+    return templates[platform] || templates.facebook;
+  }
+
+  function regenerateContent(platform) {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    // Show loading state
+    button.innerHTML = `
+      <svg class="w-3 h-3 inline mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      Generating...
+    `;
+    button.disabled = true;
+    
+    // Simulate content regeneration (in real app, this would call the backend)
+    setTimeout(() => {
+      const editor = document.getElementById(`content-editor-${platform}`);
+      const variations = [
+        "🎯 Transform your experience with our innovative product! Join thousands of satisfied customers. #Innovation #Quality #CustomerFirst",
+        "⭐ Discover what makes our product special! Premium quality meets exceptional value. #Premium #Value #Excellence",
+        "🌟 Ready for something amazing? Our product delivers results you can see and feel. #Results #Amazing #Transformation",
+        "🚀 Take your life to the next level! Our product is designed for people who want more. #NextLevel #Designed #More"
+      ];
+      
+      const randomVariation = variations[Math.floor(Math.random() * variations.length)];
+      editor.innerHTML = randomVariation;
+      updateCharacterCount(platform);
+      
+      // Reset button
+      button.innerHTML = originalText;
+      button.disabled = false;
+      
+      showNotification(`New content generated for ${platform}!`, 'success');
+    }, 2000);
+  }
+
+  function generateAlternateImages(platform) {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    // Show loading state
+    button.innerHTML = `
+      <svg class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      Generating...
+    `;
+    button.disabled = true;
+    
+    // Simulate image generation (in real app, this would call the backend API)
+    setTimeout(() => {
+      // Find the images container for this platform - more specific selector
+      let imagesContainer = button.parentElement.parentElement.querySelector('.grid');
+      
+      // If not found, try alternative selector
+      if (!imagesContainer) {
+        // Find the parent images section and then the grid
+        const imagesSection = button.closest('.mt-6');
+        if (imagesSection) {
+          imagesContainer = imagesSection.querySelector('.grid');
+        }
+      }
+      
+      // Debug logging
+      console.log('Platform:', platform);
+      console.log('Button:', button);
+      console.log('Images container:', imagesContainer);
+      
+      if (imagesContainer) {
+        // Generate new alternate image URLs
+        const platformSizes = {
+          facebook: '1200x630',
+          instagram: '1080x1080', 
+          twitter: '1200x675',
+          linkedin: '1200x627'
+        };
+        
+        const size = platformSizes[platform] || '1200x630';
+        const timestamp = Date.now();
+        const alternateImages = [
+          {
+            url: `https://source.unsplash.com/${size}/?random&business&${timestamp}1`,
+            variant: 'A',
+            id: `${platform}_alt_1_${timestamp}`,
+            type: 'ai_generated',
+            size: size
+          },
+          {
+            url: `https://source.unsplash.com/${size}/?random&product&${timestamp}2`,
+            variant: 'B', 
+            id: `${platform}_alt_2_${timestamp}`,
+            type: 'ai_generated',
+            size: size
+          },
+          {
+            url: `https://source.unsplash.com/${size}/?random&tech&${timestamp}3`,
+            variant: 'C',
+            id: `${platform}_alt_3_${timestamp}`,
+            type: 'ai_generated',
+            size: size
+          },
+          {
+            url: `https://source.unsplash.com/${size}/?random&marketing&${timestamp}4`,
+            variant: 'D',
+            id: `${platform}_alt_4_${timestamp}`,
+            type: 'ai_generated',
+            size: size
+          }
+        ];
+        
+        // Replace existing images with new ones
+        imagesContainer.innerHTML = '';
+        
+        alternateImages.forEach((image, index) => {
+          const imageDiv = document.createElement('div');
+          imageDiv.className = 'relative group cursor-pointer';
+          imageDiv.setAttribute('data-controller', 'image-selector');
+          imageDiv.setAttribute('data-image-url', image.url);
+          imageDiv.setAttribute('data-image-id', image.id);
+          
+          // Create fallback image URL
+          const fallbackUrl = `https://via.placeholder.com/${image.size}/e5e7eb/6b7280?text=Variant+${image.variant}`;
+          
+          imageDiv.innerHTML = `
+            <div class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors">
+              <img src="${image.url}" 
+                   alt="Generated image for ${platform} - Variant ${image.variant}"
+                   class="w-full ${platform === 'instagram' ? 'h-32' : 'h-24'} object-cover group-hover:opacity-90 transition-opacity"
+                   loading="lazy"
+                   onerror="this.onerror=null; this.src='${fallbackUrl}';">
+              
+              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button type="button" 
+                          onclick="selectImage('${image.url}', '${image.id}', '${platform}')"
+                          class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Select
+                  </button>
+                </div>
+              </div>
+              
+              <div class="absolute top-2 right-2">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">New</span>
+              </div>
+            </div>
+            
+            <div class="mt-2 flex justify-between items-center">
+              <span class="text-xs text-gray-500">Variant ${image.variant}</span>
+              <div class="flex space-x-1">
+                <button type="button"
+                        onclick="downloadImage('${image.url}', '${platform}_${image.variant}.jpg')"
+                        class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                        title="Download image">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </button>
+                <button type="button"
+                        onclick="copyImageUrl('${image.url}')"
+                        class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                        title="Copy image URL">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          `;
+          
+          imagesContainer.appendChild(imageDiv);
+        });
+        
+        console.log('Generated alternate images:', alternateImages);
+      } else {
+        console.error('Could not find images container for platform:', platform);
+        showNotification('Error: Could not find images container', 'error');
+      }
+      
+      // Reset button
+      button.innerHTML = originalText;
+      button.disabled = false;
+      
+      showNotification(`New alternate images generated for ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, 'success');
+      
+    }, 2000);
+  }
+
+  function postToSocialMedia() {
+    const selectedPlatforms = Array.from(document.querySelectorAll('input[name="post_platforms"]:checked'))
+      .map(input => input.value);
+    
+    if (selectedPlatforms.length === 0) {
+      showNotification('Please select at least one platform to post to', 'warning');
+      return;
+    }
+
+    // Validate that content and images are selected for each platform
+    let validationErrors = [];
+    const postData = [];
+
+    for (const platform of selectedPlatforms) {
+      const editor = document.getElementById(`content-editor-${platform}`);
+      const selectedImage = document.querySelector(`[data-image-id*="${platform}"].ring-2`);
+      
+      // Check if content exists
+      const content = editor ? (editor.innerText || editor.textContent || '').trim() : '';
+      if (!content) {
+        validationErrors.push(`${platform.charAt(0).toUpperCase() + platform.slice(1)}: No content available`);
+        continue;
+      }
+
+      // Check if image is selected
+      if (!selectedImage) {
+        validationErrors.push(`${platform.charAt(0).toUpperCase() + platform.slice(1)}: Please select an image`);
+        continue;
+      }
+
+      postData.push({
+        platform,
+        content,
+        image: selectedImage.dataset.imageUrl,
+        scheduled: document.getElementById('schedule_post').checked
+      });
+    }
+
+    // Show validation errors if any
+    if (validationErrors.length > 0) {
+      const errorMessage = validationErrors.length === 1 
+        ? validationErrors[0] 
+        : `Please fix the following issues:\n• ${validationErrors.join('\n• ')}`;
+      showNotification(errorMessage, 'warning');
+      return;
+    }
+
+    const postButton = event.target;
+    const originalText = postButton.innerHTML;
+    
+    // Show loading state
+    postButton.innerHTML = `
+      <svg class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      Posting...
+    `;
+    postButton.disabled = true;
+    
+    // Simulate posting (in real app, this would call the backend API)
+    setTimeout(() => {
+      // Reset button
+      postButton.innerHTML = originalText;
+      postButton.disabled = false;
+      
+      // Show success message
+      const platformNames = selectedPlatforms.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(', ');
+      const schedulePost = document.getElementById('schedule_post').checked;
+      const message = schedulePost ? 
+        `Content scheduled for: ${platformNames}` : 
+        `Posted successfully to: ${platformNames}`;
+      
+      showNotification(message, 'success');
+      
+      // Log posting data for debugging
+      console.log('Posted content:', postData);
+      
+      // Show detailed success breakdown
+      postData.forEach(post => {
+        console.log(`${post.platform}:`, {
+          contentLength: post.content.length,
+          hasImage: !!post.image,
+          scheduled: post.scheduled
+        });
+      });
+      
+    }, 3000);
+  }
+
+  function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 px-4 py-2 rounded-md text-white text-sm font-medium z-50 transition-all transform translate-x-0 ${
+      type === 'success' ? 'bg-green-500' : 
+      type === 'error' ? 'bg-red-500' : 
+      type === 'warning' ? 'bg-yellow-500' : 
+      'bg-blue-500'
+    }`;
+    notification.textContent = message;
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => notification.classList.add('translate-x-0'), 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.classList.add('translate-x-full', 'opacity-0');
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
+
+  // Initialize image galleries with keyboard navigation and load saved content
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load saved content from localStorage and initialize status
+    <% @generated_content.each do |content| %>
+      const storageKey<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %> = 'promotion_content_<%= content[:platform] %>_<%= @product.id %>';
+      const savedContent<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %> = localStorage.getItem(storageKey<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>);
+      if (savedContent<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>) {
+        const editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %> = document.getElementById('content-editor-<%= content[:platform] %>');
+        if (editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>) {
+          editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>.innerHTML = savedContent<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>;
+          editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>.dataset.originalContent = savedContent<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>;
+          updateCharacterCount('<%= content[:platform] %>');
+        }
+      }
+      
+      // Initialize platform status
+      updatePlatformStatus('<%= content[:platform] %>');
+      
+      // Add content change listener to update status
+      const editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %> = document.getElementById('content-editor-<%= content[:platform] %>');
+      if (editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>) {
+        editor<%= content[:platform].gsub(/[^a-zA-Z0-9]/, '') %>.addEventListener('input', () => {
+          updatePlatformStatus('<%= content[:platform] %>');
+        });
+      }
+    <% end %>
+
+    // Schedule post toggle functionality
+    const scheduleCheckbox = document.getElementById('schedule_post');
+    const scheduleOptions = document.getElementById('schedule_options');
+    
+    if (scheduleCheckbox && scheduleOptions) {
+      scheduleCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          scheduleOptions.classList.remove('hidden');
+        } else {
+          scheduleOptions.classList.add('hidden');
+        }
+      });
+    }
+
+    // Add keyboard navigation for image selection
+    document.addEventListener('keydown', function(e) {
+      if (e.key >= '1' && e.key <= '4') {
+        const imageIndex = parseInt(e.key) - 1;
+        const images = document.querySelectorAll('[data-controller="image-selector"]');
+        if (images[imageIndex]) {
+          const button = images[imageIndex].querySelector('button[onclick*="selectImage"]');
+          if (button) button.click();
+        }
+      }
+    });
+  });
+</script>
