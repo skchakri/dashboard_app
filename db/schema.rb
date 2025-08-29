@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_27_004446) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_27_171536) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -134,7 +134,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_004446) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "company_id", null: false
+    t.integer "market_id"
     t.index ["company_id"], name: "index_users_on_company_id"
+    t.index ["market_id"], name: "index_users_on_market_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -149,4 +151,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_004446) do
   add_foreign_key "product_markets", "products"
   add_foreign_key "products", "companies"
   add_foreign_key "users", "companies"
+  add_foreign_key "users", "markets"
 end

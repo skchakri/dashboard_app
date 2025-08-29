@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
   belongs_to :company
+  belongs_to :market, optional: true
 
   validates :email, presence: true, uniqueness: { scope: :company_id }, 
             format: { with: URI::MailTo::EMAIL_REGEXP }

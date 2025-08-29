@@ -27,6 +27,14 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboard#index"
     get "admin_dashboard", to: "dashboard#admin"
 
+    # Product promotion routes
+    resources :products, only: [] do
+      member do
+        get :promote, to: "promotions#show"
+        post :promote, to: "promotions#create"
+      end
+    end
+
     # Root route for subdomains
     root "sessions#new", as: :company_root
   end

@@ -1,0 +1,66 @@
+[
+  {
+    "sku": "TEST001",
+    "base_name": "Test Product 1",
+    "base_description": "A test product for import",
+    "base_price": 29.99,
+    "status": "active",
+    "stock_quantity": 100,
+    "featured": true,
+    "categories": ["Electronics", "Gadgets"],
+    "keywords": ["test", "electronics", "gadget"],
+    "images": [
+      {
+        "url": "https://example.com/image1.jpg",
+        "alt_text": "Test Product Image",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "name": "Test Product 1 - US",
+        "description": "Test product for US market",
+        "price": 29.99,
+        "currency": "USD",
+        "available": true
+      },
+      "eu": {
+        "name": "Test Product 1 - EU",
+        "description": "Test product for European market",
+        "price": 24.99,
+        "currency": "EUR",
+        "available": true,
+        "special_price": 19.99,
+        "special_price_start": "2024-01-01",
+        "special_price_end": "2024-12-31"
+      }
+    }
+  },
+  {
+    "sku": "TEST001",
+    "base_name": "Test Product 1 Updated",
+    "base_description": "Updated test product description",
+    "base_price": 34.99,
+    "status": "active",
+    "stock_quantity": 150,
+    "featured": false,
+    "categories": ["Electronics", "Updated Category"],
+    "keywords": ["test", "updated", "electronics"],
+    "images": [
+      {
+        "url": "https://example.com/updated-image.jpg",
+        "alt_text": "Updated Product Image",
+        "sort_order": 1
+      }
+    ],
+    "markets": {
+      "us": {
+        "name": "Updated Test Product 1 - US",
+        "description": "Updated test product for US market",
+        "price": 34.99,
+        "currency": "USD",
+        "available": true
+      }
+    }
+  }
+]
