@@ -1,0 +1,4 @@
+Date,User Email,Model Type,AI Model,Platform,Request Type,Input Tokens,Output Tokens,Cost (USD),Prompt Preview,Response Preview
+<% @usage_data.each do |log| -%>
+<%= log.created_at.strftime("%Y-%m-%d %H:%M:%S") %>,<%= log.user.email %>,"<%= log.model_type %>","<%= log.ai_model %>","<%= log.platform || '' %>","<%= log.request_type || '' %>",<%= log.input_tokens %>,<%= log.output_tokens %>,"<%= sprintf("%.4f", log.cost_cents / 100.0) %>","<%= log.prompt_text&.truncate(100)&.gsub('"', '""') %>","<%= log.response_text&.truncate(100)&.gsub('"', '""')&.gsub(/\n/, ' ')&.gsub(/,/, ';') %>"
+<% end -%>

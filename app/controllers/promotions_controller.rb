@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
   layout "dashboard"
-  before_action :set_product, only: [ :show, :create ]
+  before_action :set_product, only: [ :show, :create, :regenerate, :regenerate_images ]
 
   def show
     @user_market = current_user.market || current_company.markets.active.first
@@ -57,7 +57,8 @@ class PromotionsController < ApplicationController
         audience_type: audience_type,
         message_tone: message_tone,
         custom_message: final_custom_message,
-        social_platform: social_platform
+        social_platform: social_platform,
+        user: current_user
       )
 
       @generated_content = content_service.generate_content
@@ -65,6 +66,91 @@ class PromotionsController < ApplicationController
     rescue StandardError => e
       flash[:alert] = "Failed to generate content: #{e.message}"
       redirect_to promote_product_path(@product)
+    end
+  end
+
+  def regenerate
+    @user_market = current_user.market || current_company.markets.active.first
+
+    platform = params[:platform]
+    audience_type = params[:audience_type]
+    message_tone = params[:message_tone]
+    context_prompt = params[:context_prompt]
+    custom_message = params[:custom_message]
+    social_platform = platform || "general"
+
+    # Build final custom message based on context selection
+    final_custom_message = build_custom_message(context_prompt, custom_message)
+
+    begin
+      content_service = SocialContentGenerationService.new(
+        product: @product,
+        market: @user_market,
+        audience_type: audience_type,
+        message_tone: message_tone,
+        custom_message: final_custom_message,
+        social_platform: social_platform,
+        user: current_user
+      )
+
+      generated_content = content_service.generate_content
+
+      # Find the content for the specific platform
+      platform_content = generated_content.find { |content| content[:platform] == platform }
+      if platform_content
+        render json: {
+          success: true,
+          content: platform_content[:content],
+          title: platform_content[:title],
+          hashtags: platform_content[:hashtags],
+          character_count: platform_content[:character_count],
+          max_chars: platform_content[:max_chars]
+        }
+      else
+        render json: { success: false, error: "Platform content not found" }, status: 422
+      end
+    rescue StandardError => e
+      Rails.logger.error "Failed to regenerate content: #{e.message}"
+      render json: { success: false, error: "Failed to regenerate content: #{e.message}" }, status: 500
+    end
+  end
+
+  def regenerate_images
+    @user_market = current_user.market || current_company.markets.active.first
+
+    platform = params[:platform]
+    audience_type = params[:audience_type] || "millennials"
+    message_tone = params[:message_tone] || "friendly"
+
+    # Platform configurations for different social media platforms
+    platform_configs = {
+      "facebook" => { platform: "facebook", image_size: "1200x630", image_ratio: "1.91:1" },
+      "instagram" => { platform: "instagram", image_size: "1080x1080", image_ratio: "1:1" },
+      "twitter" => { platform: "twitter", image_size: "1200x675", image_ratio: "1.78:1" },
+      "linkedin" => { platform: "linkedin", image_size: "1200x627", image_ratio: "1.91:1" }
+    }
+
+    platform_config = platform_configs[platform] || platform_configs["instagram"]
+
+    begin
+      image_service = ImageGenerationService.new(
+        product: @product,
+        market: @user_market,
+        audience_type: audience_type,
+        message_tone: message_tone,
+        user: current_user
+      )
+
+      generated_images = image_service.generate_images_for_platform(platform_config)
+
+      render json: {
+        success: true,
+        images: generated_images,
+        platform: platform
+      }
+    rescue StandardError => e
+      Rails.logger.error "Failed to regenerate images: #{e.message}"
+      render json: { success: false, error: "Failed to generate alternate images: #{e.message}" }, status: 500
     end
   end
 

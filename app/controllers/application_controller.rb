@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     if subdomain.present?
       @current_company = Company.find_by_subdomain(subdomain)
       Rails.logger.debug "=== DEBUG: Company found: #{@current_company&.name}"
-      redirect_to root_url(subdomain: false) unless @current_company
+  redirect_to root_url(subdomain: false), allow_other_host: true unless @current_company
     else
       @current_company = nil
       Rails.logger.debug "=== DEBUG: No subdomain, setting company to nil"

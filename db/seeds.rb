@@ -51,7 +51,7 @@ global_user = User.find_or_create_by(email: "user@globalsystems.com", company: g
 end
 
 # Create markets for companies
-companies = [acme_corp, tech_solutions, global_systems]
+companies = [ acme_corp, tech_solutions, global_systems ]
 companies.each do |company|
   # US Market
   us_market = Market.find_or_create_by(company: company, code: 'us') do |market|
@@ -122,7 +122,7 @@ companies.each do |company|
   end
 
   # Create product keywords
-  ['laptop', 'professional', 'business', 'computer', 'portable'].each do |keyword|
+  [ 'laptop', 'professional', 'business', 'computer', 'portable' ].each do |keyword|
     ProductKeyword.find_or_create_by(product: laptop_product, keyword: keyword)
   end
 
@@ -132,7 +132,7 @@ end
 
 puts "Created #{Company.count} companies:"
 puts "- ACME Corp (subdomain: acme)"
-puts "- Tech Solutions Inc (subdomain: techsolutions)" 
+puts "- Tech Solutions Inc (subdomain: techsolutions)"
 puts "- Global Systems Ltd (subdomain: globalsystems)"
 puts ""
 puts "Created #{User.count} users across all companies"

@@ -1,3 +1,14 @@
+<div id="content-block">
+  <%= @content if defined?(@content) %>
+</div>
+<div id="image-block">
+  <% if defined?(@image_status) && @image_status == 'pending' %>
+    <span id="image-loading">Image generation in progress...</span>
+  <% elsif defined?(@image_url) && @image_url %>
+    <img src="<%= @image_url %>" id="product-image" />
+  <% end %>
+</div>
+<script src="/assets/dashboard_async_images.js"></script>
 <div class="mb-4">
   <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
     Welcome back, <%= current_user.display_name %>!

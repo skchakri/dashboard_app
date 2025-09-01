@@ -4,8 +4,12 @@ default: &default
 
 development:
   <<: *default
-  adapter: sqlite3
-  database: storage/development.sqlite3
+  adapter: mysql2
+  encoding: utf8mb4
+  database: dashboard_app
+  username: dashboard_app
+  password: "password"
+  host: 127.0.0.1
 
 test:
   <<: *default

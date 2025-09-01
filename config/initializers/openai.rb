@@ -1,10 +1,10 @@
 # OpenAI Configuration for RubyLLM
-# 
+#
 # You can configure your OpenAI API key in one of two ways:
-# 
+#
 # 1. Environment Variable (Recommended for production):
 #    Set OPENAI_API_KEY in your environment
-# 
+#
 # 2. Rails Credentials (Recommended for development):
 #    Run: rails credentials:edit
 #    Add:
@@ -14,7 +14,7 @@
 # The SocialContentGenerationService will automatically pick up the key from either location.
 
 # Validate that an API key is available
-api_key = Rails.application.credentials.dig(:openai, :api_key) || ENV['OPENAI_API_KEY']
+api_key = Rails.application.credentials.dig(:openai, :api_key) || ENV["OPENAI_API_KEY"]
 
 if api_key.blank?
   Rails.logger.warn "OpenAI API key not configured. Set OPENAI_API_KEY environment variable or add to Rails credentials."

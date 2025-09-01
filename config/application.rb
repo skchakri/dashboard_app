@@ -23,10 +23,10 @@ module DashboardApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    
+
     # Auto-load services directory
     config.autoload_paths << Rails.root.join("app", "services")
-    
+
     # Configure subdomain detection for localhost development
     # This tells Rails to treat "localhost" as having 0 domain levels
     # so "acme.localhost" will be parsed as subdomain: "acme", domain: "localhost"

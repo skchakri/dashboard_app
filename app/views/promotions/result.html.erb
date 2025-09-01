@@ -1,4 +1,9 @@
-<div class="max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto" 
+     data-product-id="<%= @product.id %>" 
+     data-audience-type="<%= params[:audience_type] %>" 
+     data-message-tone="<%= params[:message_tone] %>" 
+     data-context-prompt="<%= params[:context_prompt] %>" 
+     data-custom-message="<%= params[:custom_message] %>">
   <!-- Header -->
   <div class="mb-6">
     <div class="flex items-center justify-between mb-3">
@@ -41,7 +46,6 @@
       </div>
     </div>
   </div>
-
   <!-- Generated Content -->
   <div class="space-y-6">
     <% @generated_content.each_with_index do |content, index| %>
@@ -68,6 +72,11 @@
                 <h3 class="text-sm font-medium text-gray-900 dark:text-white capitalize">
                   <%= content[:platform] %> Post
                 </h3>
+                <% if content[:title].present? %>
+                  <p class="text-xs font-medium text-blue-600 dark:text-blue-400">
+                    <%= content[:title].html_safe %>
+                  </p>
+                <% end %>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
                   <%= content[:character_count] %> characters
                 </p>
@@ -109,15 +118,6 @@
                   <option value="template">Template Based</option>
                 </select>
               </div>
-              <button type="button" 
-                      onclick="regenerateContent('<%= content[:platform] %>')"
-                      class="px-2 py-1 text-xs rounded bg-blue-100 hover:bg-blue-200 dark:bg-blue-600 dark:hover:bg-blue-500 text-blue-700 dark:text-blue-300"
-                      title="Regenerate content">
-                <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Regenerate
-              </button>
             </div>
             <div class="flex items-center space-x-2 text-sm">
               <span class="text-gray-700 dark:text-gray-300 font-medium">Edit Content:</span>
@@ -196,7 +196,7 @@
                  contenteditable="true"
                  data-content-editor-target="editor"
                  data-original-content="<%= content[:content] %>"
-                 spellcheck="true"><%= content[:content] %></div>
+                 spellcheck="true"><%= content[:content].html_safe %></div>
             
             <!-- Character Counter -->
             <div class="mt-2 flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
@@ -225,13 +225,14 @@
 
           <!-- Generate Different Content Button -->
           <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-            <%= link_to promote_product_path(@product), 
-                class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+            <button type="button"
+                    onclick="regenerateContent('<%= content[:platform] %>')"
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               Generate Different Content
-            <% end %>
+            </button>
           </div>
 
           <!-- Generated Images Section -->
@@ -721,6 +722,14 @@
     const button = event.target;
     const originalText = button.innerHTML;
     
+    // Get original form parameters from data attributes
+    const container = document.querySelector('[data-product-id]');
+    const productId = container.dataset.productId;
+    const audienceType = container.dataset.audienceType;
+    const messageTone = container.dataset.messageTone;
+    const contextPrompt = container.dataset.contextPrompt;
+    const customMessage = container.dataset.customMessage;
+    
     // Show loading state
     button.innerHTML = `
       <svg class="w-3 h-3 inline mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -730,31 +739,92 @@
     `;
     button.disabled = true;
     
-    // Simulate content regeneration (in real app, this would call the backend)
-    setTimeout(() => {
-      const editor = document.getElementById(`content-editor-${platform}`);
-      const variations = [
-        "🎯 Transform your experience with our innovative product! Join thousands of satisfied customers. #Innovation #Quality #CustomerFirst",
-        "⭐ Discover what makes our product special! Premium quality meets exceptional value. #Premium #Value #Excellence",
-        "🌟 Ready for something amazing? Our product delivers results you can see and feel. #Results #Amazing #Transformation",
-        "🚀 Take your life to the next level! Our product is designed for people who want more. #NextLevel #Designed #More"
-      ];
-      
-      const randomVariation = variations[Math.floor(Math.random() * variations.length)];
-      editor.innerHTML = randomVariation;
-      updateCharacterCount(platform);
-      
-      // Reset button
+    // Get CSRF token for Rails
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    // Make AJAX request to regenerate content
+    fetch(`/products/${productId}/regenerate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        platform: platform,
+        audience_type: audienceType,
+        message_tone: messageTone,
+        context_prompt: contextPrompt,
+        custom_message: customMessage
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Update the content editor
+        const editor = document.getElementById(`content-editor-${platform}`);
+        const titleElement = editor.closest('.bg-white').querySelector('.text-blue-600');
+        
+        if (editor) {
+          editor.innerHTML = data.content;
+          editor.dataset.originalContent = data.content;
+          updateCharacterCount(platform);
+        }
+        
+        // Update title if present
+        if (titleElement && data.title) {
+          titleElement.innerHTML = data.title;
+        }
+        
+        // Update hashtags if present
+        updateHashtags(platform, data.hashtags);
+        
+        showNotification(`New content generated for ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, 'success');
+      } else {
+        showNotification(`Failed to regenerate content: ${data.error}`, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Regeneration error:', error);
+      showNotification('Failed to regenerate content. Please try again.', 'error');
+    })
+    .finally(() => {
+      // Reset button state
       button.innerHTML = originalText;
       button.disabled = false;
+    });
+  }
+  
+  function updateHashtags(platform, hashtags) {
+    if (!hashtags || !hashtags.length) return;
+    
+    // Find the hashtags section for this platform
+    const contentContainer = document.getElementById(`content-editor-${platform}`).closest('.p-6');
+    const hashtagsContainer = contentContainer.querySelector('.flex-wrap');
+    
+    if (hashtagsContainer) {
+      // Clear existing hashtags
+      hashtagsContainer.innerHTML = '';
       
-      showNotification(`New content generated for ${platform}!`, 'success');
-    }, 2000);
+      // Add new hashtags
+      hashtags.forEach(hashtag => {
+        const hashtagSpan = document.createElement('span');
+        hashtagSpan.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800';
+        hashtagSpan.textContent = `#${hashtag}`;
+        hashtagsContainer.appendChild(hashtagSpan);
+      });
+    }
   }
 
   function generateAlternateImages(platform) {
     const button = event.target;
     const originalText = button.innerHTML;
+    
+    // Get original form parameters from data attributes
+    const container = document.querySelector('[data-product-id]');
+    const productId = container.dataset.productId;
+    const audienceType = container.dataset.audienceType;
+    const messageTone = container.dataset.messageTone;
     
     // Show loading state
     button.innerHTML = `
@@ -765,145 +835,152 @@
     `;
     button.disabled = true;
     
-    // Simulate image generation (in real app, this would call the backend API)
-    setTimeout(() => {
-      // Find the images container for this platform - more specific selector
-      let imagesContainer = button.parentElement.parentElement.querySelector('.grid');
-      
-      // If not found, try alternative selector
-      if (!imagesContainer) {
-        // Find the parent images section and then the grid
-        const imagesSection = button.closest('.mt-6');
-        if (imagesSection) {
-          imagesContainer = imagesSection.querySelector('.grid');
-        }
-      }
-      
-      // Debug logging
-      console.log('Platform:', platform);
-      console.log('Button:', button);
-      console.log('Images container:', imagesContainer);
-      
-      if (imagesContainer) {
-        // Generate new alternate image URLs
-        const platformSizes = {
-          facebook: '1200x630',
-          instagram: '1080x1080', 
-          twitter: '1200x675',
-          linkedin: '1200x627'
-        };
+    // Get CSRF token for Rails
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    // Make AJAX request to regenerate images
+    fetch(`/products/${productId}/regenerate_images`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        platform: platform,
+        audience_type: audienceType || 'millennials',
+        message_tone: messageTone || 'friendly'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.images) {
+        // Find the images container for this platform - more specific selector
+        let imagesContainer = button.parentElement.parentElement.querySelector('.grid');
         
-        const size = platformSizes[platform] || '1200x630';
-        const timestamp = Date.now();
-        const alternateImages = [
-          {
-            url: `https://source.unsplash.com/${size}/?random&business&${timestamp}1`,
-            variant: 'A',
-            id: `${platform}_alt_1_${timestamp}`,
-            type: 'ai_generated',
-            size: size
-          },
-          {
-            url: `https://source.unsplash.com/${size}/?random&product&${timestamp}2`,
-            variant: 'B', 
-            id: `${platform}_alt_2_${timestamp}`,
-            type: 'ai_generated',
-            size: size
-          },
-          {
-            url: `https://source.unsplash.com/${size}/?random&tech&${timestamp}3`,
-            variant: 'C',
-            id: `${platform}_alt_3_${timestamp}`,
-            type: 'ai_generated',
-            size: size
-          },
-          {
-            url: `https://source.unsplash.com/${size}/?random&marketing&${timestamp}4`,
-            variant: 'D',
-            id: `${platform}_alt_4_${timestamp}`,
-            type: 'ai_generated',
-            size: size
+        // If not found, try alternative selector
+        if (!imagesContainer) {
+          // Find the parent images section and then the grid
+          const imagesSection = button.closest('.mt-6');
+          if (imagesSection) {
+            imagesContainer = imagesSection.querySelector('.grid');
           }
-        ];
+        }
         
-        // Replace existing images with new ones
-        imagesContainer.innerHTML = '';
+        // Debug logging
+        console.log('Platform:', platform);
+        console.log('Button:', button);
+        console.log('Images container:', imagesContainer);
+        console.log('Generated images from API:', data.images);
         
-        alternateImages.forEach((image, index) => {
-          const imageDiv = document.createElement('div');
-          imageDiv.className = 'relative group cursor-pointer';
-          imageDiv.setAttribute('data-controller', 'image-selector');
-          imageDiv.setAttribute('data-image-url', image.url);
-          imageDiv.setAttribute('data-image-id', image.id);
+        if (imagesContainer) {
+          // Use the real images from the API response
+          const alternateImages = data.images;
+        
+          // Replace existing images with new ones
+          imagesContainer.innerHTML = '';
           
-          // Create fallback image URL
-          const fallbackUrl = `https://via.placeholder.com/${image.size}/e5e7eb/6b7280?text=Variant+${image.variant}`;
-          
-          imageDiv.innerHTML = `
-            <div class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors">
-              <img src="${image.url}" 
-                   alt="Generated image for ${platform} - Variant ${image.variant}"
-                   class="w-full ${platform === 'instagram' ? 'h-32' : 'h-24'} object-cover group-hover:opacity-90 transition-opacity"
-                   loading="lazy"
-                   onerror="this.onerror=null; this.src='${fallbackUrl}';">
-              
-              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button type="button" 
-                          onclick="selectImage('${image.url}', '${image.id}', '${platform}')"
-                          class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Select
-                  </button>
+          alternateImages.forEach((image, index) => {
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'relative group cursor-pointer';
+            imageDiv.setAttribute('data-controller', 'image-selector');
+            imageDiv.setAttribute('data-image-url', image.url);
+            imageDiv.setAttribute('data-image-id', image.id);
+            
+            // Create fallback image URL using image size from API
+            const fallbackUrl = `https://via.placeholder.com/${image.size}/e5e7eb/6b7280?text=Variant+${image.variant}`;
+            
+            // Determine badge color and text based on image type
+            const badgeInfo = getBadgeInfo(image.type);
+            
+            imageDiv.innerHTML = `
+              <div class="relative overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-500 transition-colors">
+                <img src="${image.url}" 
+                     alt="Generated image for ${platform} - Variant ${image.variant}"
+                     class="w-full ${platform === 'instagram' ? 'h-32' : 'h-24'} object-cover group-hover:opacity-90 transition-opacity"
+                     loading="lazy"
+                     onerror="this.onerror=null; this.src='${fallbackUrl}'; this.nextElementSibling.nextElementSibling.querySelector('span').className='inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800'; this.nextElementSibling.nextElementSibling.querySelector('span').textContent='Error';">
+                
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button type="button" 
+                            onclick="selectImage('${image.url}', '${image.id}', '${platform}')"
+                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Select
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="absolute top-2 right-2">
+                  <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium ${badgeInfo.className}">${badgeInfo.text}</span>
                 </div>
               </div>
               
-              <div class="absolute top-2 right-2">
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">New</span>
+              <div class="mt-2 flex justify-between items-center">
+                <span class="text-xs text-gray-500">Variant ${image.variant}</span>
+                <div class="flex space-x-1">
+                  <button type="button"
+                          onclick="downloadImage('${image.url}', '${platform}_${image.variant}.jpg')"
+                          class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                          title="Download image">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </button>
+                  <button type="button"
+                          onclick="copyImageUrl('${image.url}')"
+                          class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
+                          title="Copy image URL">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
+            `;
             
-            <div class="mt-2 flex justify-between items-center">
-              <span class="text-xs text-gray-500">Variant ${image.variant}</span>
-              <div class="flex space-x-1">
-                <button type="button"
-                        onclick="downloadImage('${image.url}', '${platform}_${image.variant}.jpg')"
-                        class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
-                        title="Download image">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </button>
-                <button type="button"
-                        onclick="copyImageUrl('${image.url}')"
-                        class="inline-flex items-center px-2 py-1 text-xs text-gray-600 hover:text-blue-600 focus:outline-none"
-                        title="Copy image URL">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          `;
+            imagesContainer.appendChild(imageDiv);
+          });
           
-          imagesContainer.appendChild(imageDiv);
-        });
+          console.log('Generated alternate images from API:', alternateImages);
+        } else {
+          console.error('Could not find images container for platform:', platform);
+          showNotification('Error: Could not find images container', 'error');
+        }
         
-        console.log('Generated alternate images:', alternateImages);
+        showNotification(`New alternate images generated for ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, 'success');
       } else {
-        console.error('Could not find images container for platform:', platform);
-        showNotification('Error: Could not find images container', 'error');
+        showNotification(`Failed to generate alternate images: ${data.error}`, 'error');
       }
-      
-      // Reset button
+    })
+    .catch(error => {
+      console.error('Image regeneration error:', error);
+      showNotification('Failed to generate alternate images. Please try again.', 'error');
+    })
+    .finally(() => {
+      // Reset button state
       button.innerHTML = originalText;
       button.disabled = false;
-      
-      showNotification(`New alternate images generated for ${platform.charAt(0).toUpperCase() + platform.slice(1)}!`, 'success');
-      
-    }, 2000);
+    });
+  }
+
+  // Helper function to determine badge styling based on image type
+  function getBadgeInfo(type) {
+    switch (type) {
+      case 'ai_generated':
+        return { className: 'bg-green-100 text-green-800', text: 'AI' };
+      case 'stock_photo':
+        return { className: 'bg-blue-100 text-blue-800', text: 'Stock' };
+      case 'generated_placeholder':
+        return { className: 'bg-purple-100 text-purple-800', text: 'Demo' };
+      case 'text_placeholder':
+        return { className: 'bg-yellow-100 text-yellow-800', text: 'Text' };
+      default:
+        return { className: 'bg-gray-100 text-gray-800', text: 'New' };
+    }
   }
 
   function postToSocialMedia() {
