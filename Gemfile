@@ -5,7 +5,7 @@ gem "rails", "~> 7.2.2", ">= 7.2.2.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use sqlite3 for development/test, mysql2 for production
-gem "sqlite3", "~> 1.4", group: [ :development, :test ]
+gem "sqlite3", "~> 2.8", group: [ :development, :test ]
 gem "mysql2", "~> 0.5", group: :production
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
